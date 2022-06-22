@@ -1,6 +1,7 @@
 module hu.unideb.inf.szakdolgozat {
     requires javafx.controls;
     requires javafx.fxml;
+    requires lombok;
 
 
     opens hu.unideb.inf.szakdolgozat to javafx.fxml;
