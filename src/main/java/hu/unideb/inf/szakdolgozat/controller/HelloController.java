@@ -1,4 +1,4 @@
-package hu.unideb.inf.szakdolgozat;
+package hu.unideb.inf.szakdolgozat.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
