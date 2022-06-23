@@ -2,7 +2,7 @@ package hu.unideb.inf.szakdolgozat.model.validator;
 
 import javafx.scene.control.Label;
 
-public class StringToNumberValidator extends AbstractValidator<String> {
+public class StringToIntegerValidator extends AbstractValidator<String> {
 
     @Override
     boolean validate(String T) {
@@ -11,7 +11,7 @@ public class StringToNumberValidator extends AbstractValidator<String> {
         }catch (NumberFormatException e){
             return false;
         }
-        return false;
+        return true;
     }
 
     @Override

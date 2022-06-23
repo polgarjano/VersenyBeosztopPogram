@@ -9,5 +9,6 @@ public class Competitor {
     private String name;
     private int birthYear;
     private String club;
+    private EventType eventType;
     private List<Constraint> Constrains;
 }

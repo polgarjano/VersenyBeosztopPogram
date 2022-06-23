@@ -22,24 +22,43 @@
                 <Label text="Competition name" />
                 <Label text="Start time " GridPane.rowIndex="1" />
                 <Label text="Number of lanes" GridPane.rowIndex="2" />
-                <Label text="Delay beetwen Relays in minutes" GridPane.rowIndex="3" />
-                <TextField fx:id="CompetitionNameLabel" GridPane.columnIndex="1" />
-                <TextField fx:id="numberOfLanes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="DelayBetweenRelays" prefHeight="25.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#next" text="Next" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Delay between Relays in minutes" GridPane.rowIndex="3" />
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                <children>
-                  <DatePicker fx:id="startTimeDate">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </DatePicker>
-                  <TextField fx:id="startTimeHour" prefHeight="25.0" prefWidth="25.0" />
-                  <Label text=":" />
-                  <TextField fx:id="startTimeMinute" prefHeight="25.0" prefWidth="30.0" />
+                  <Label fx:id="nameExceptionLabel" prefHeight="30.0" prefWidth="384.0" textAlignment="CENTER" />
+                      <TextField fx:id="competitionName" />
                </children>
-            </HBox>
-            <Label fx:id="label" GridPane.rowIndex="4" />
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label fx:id="timeExceptionLabel" prefHeight="30.0" prefWidth="366.0" textAlignment="CENTER" />
+                  <HBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="386.0">
+                     <children>
+                        <DatePicker fx:id="startTimeDate">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </DatePicker>
+                        <TextField fx:id="startTimeHour" prefHeight="25.0" prefWidth="40.0" />
+                        <Label text=":" />
+                        <TextField fx:id="startTimeMinute" prefHeight="25.0" prefWidth="40.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Label fx:id="lanesExceptionLabel" prefHeight="30.0" prefWidth="383.0" textAlignment="CENTER" />
+                      <TextField fx:id="numberOfLanes" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <Label fx:id="delayExceptionLabel" prefHeight="30.0" prefWidth="388.0" textAlignment="CENTER" />
+                      <TextField fx:id="delayBetweenRelays" prefHeight="25.0" prefWidth="20.0" />
+               </children>
+            </VBox>
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#next" text="Next" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>
     </children>
