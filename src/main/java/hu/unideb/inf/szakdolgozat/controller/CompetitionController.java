@@ -1,52 +1,100 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
-import hu.unideb.inf.szakdolgozat.model.validator.AbstractValidator;
-import hu.unideb.inf.szakdolgozat.model.validator.StringNotEmptyValidator;
-import hu.unideb.inf.szakdolgozat.model.validator.StringToNumberValidator;
+import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class CompetitionController {
 
-    private Competition competition;
+    @FXML
+    public Label nameExceptionLabel;
+    @FXML
+    public Label timeExceptionLabel;
+    @FXML
+    public Label lanesExceptionLabel;
+    @FXML
+    public Label delayExceptionLabel;
 
     @FXML
-    private TextField CompetitionNameLabel;
+    private TextField competitionName;
     @FXML
     private TextField numberOfLanes;
     @FXML
-    private TextField DelayBetweenRelays;
+    private TextField delayBetweenRelays;
     @FXML
     private DatePicker startTimeDate;
     @FXML
     private TextField startTimeHour;
     @FXML
     private TextField startTimeMinute;
-    @FXML
-    private Label label;
+
+    private Competition competition;
 
     public void next(ActionEvent actionEvent) {
+        resetExceptionLabels();
+
+        if (validate()) {
+            creatCompetition();
+            System.out.println(competition);
+        } else {
+            System.out.println(LocalTime.MAX);
+        }
+    }
+
+    private void resetExceptionLabels() {
+        nameExceptionLabel.setText("");
+        timeExceptionLabel.setText("");
+        lanesExceptionLabel.setText("");
+        delayExceptionLabel.setText("");
+    }
+
+
+    private boolean validate() {
+        AbstractValidator<String> NameValidator = new StringNotEmptyValidator();
+
+        AbstractValidator<Object> startDateValidator = new NotNullValidator();
+
+        AbstractValidator<String> startTimeHourValidator = new StringNotEmptyValidator();
+        startTimeHourValidator.add(new StringToIntegerValidator());
+        startTimeHourValidator.add(new HourValidator());
+
+        AbstractValidator<String> startTimeMinuteValidator = new StringNotEmptyValidator();
+        startTimeMinuteValidator.add(new StringToIntegerValidator());
+        startTimeMinuteValidator.add(new MinuteValidator());
+
+        AbstractValidator<String> numberOfLaneValidator = new StringNotEmptyValidator();
+        numberOfLaneValidator.add(new StringToIntegerValidator());
+        numberOfLaneValidator.add(new PositiveIntegerValidator());
+
+        AbstractValidator<String> delayValidator = new StringNotEmptyValidator();
+        delayValidator.add(new StringToIntegerValidator());
+        delayValidator.add(new PositiveIntegerValidator());
+        delayValidator.add(new MaxIntegerValueValidator(
+                (LocalTime.MAX.getHour() * 60) + LocalTime.MAX.getMinute())
+        );
+
+        return (NameValidator.execute(competitionName.getText(), nameExceptionLabel)
+                & startDateValidator.execute(startTimeDate.getValue(), timeExceptionLabel)
+                & startTimeHourValidator.execute(startTimeHour.getText(), timeExceptionLabel)
+                & startTimeMinuteValidator.execute(startTimeMinute.getText(), timeExceptionLabel)
+                & numberOfLaneValidator.execute(numberOfLanes.getText(), lanesExceptionLabel)
+                & delayValidator.execute(delayBetweenRelays.getText(), delayExceptionLabel));
+    }
+
+    private void creatCompetition() {
         competition = new Competition();
-        AbstractValidator NameValidator = new StringNotEmptyValidator();
-        if (NameValidator.execute(CompetitionNameLabel.getText(), label)) {
-            System.out.println(CompetitionNameLabel.getText());
-        } else {
-            System.out.println("Üresvolt");
-        }
-
-        AbstractValidator numberOfLanesValidator = new StringNotEmptyValidator();
-        numberOfLanesValidator.add(new StringToNumberValidator());
-
-        if (numberOfLanesValidator.execute(numberOfLanes.getText(), label)) {
-            System.out.println(Integer.parseInt(numberOfLanes.getText()));
-        } else {
-            System.out.println("nem szam");
-        }
-
-
+        competition.setName(competitionName.getText());
+        int delay = Integer.parseInt(delayBetweenRelays.getText());
+        competition.setDelayBetweenRelays(LocalTime.of(delay / 60, delay % 60));
+        competition.setNumberOfLanes(Integer.parseInt(numberOfLanes.getText()));
+        competition.setTimeOfBeginning(LocalDateTime.of(startTimeDate.getValue(),
+                LocalTime.of(Integer.parseInt(startTimeHour.getText()), Integer.parseInt(startTimeMinute.getText()))));
     }
 }

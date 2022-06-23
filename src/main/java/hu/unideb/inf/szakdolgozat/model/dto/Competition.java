@@ -15,6 +15,6 @@ public class Competition {
     private LocalDateTime timeOfBeginning;
     private int NumberOfLanes;
     private LocalTime DelayBetweenRelays;
-    private Set<CompetitionEvent> CompetitionEvents;
+    private Set<Competitor> competitors;
     private List<Schedule> schedules;
 }
