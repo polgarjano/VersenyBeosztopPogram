@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="675.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.AddCompetitorViewController">
+   <children>
+      <VBox layoutX="-1.0">
+         <children>
+            <HBox prefHeight="99.0" prefWidth="786.0" />
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="576.0" prefWidth="875.0">
+               <children>
+                  <ListView prefHeight="576.0" prefWidth="492.0" />
+                  <HBox prefHeight="576.0" prefWidth="439.0">
+                     <children>
+                        <VBox prefHeight="576.0" prefWidth="197.0">
+                           <children>
+                              <Label prefHeight="49.0" prefWidth="79.0" text="Name:">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets top="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="10.0" prefHeight="28.0" prefWidth="239.0" text="Club:">
+                                 <padding>
+                                    <Insets top="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="38.0" prefHeight="28.0" prefWidth="239.0" text="Birth year:">
+                                 <padding>
+                                    <Insets top="40.0" />
+                                 </padding>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="66.0" prefHeight="28.0" prefWidth="239.0" text="Event Type:">
+                                 <padding>
+                                    <Insets top="40.0" />
+                                 </padding>
+                              </Label>
+                              <HBox alignment="BOTTOM_LEFT" prefHeight="348.0" prefWidth="161.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="Back" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="576.0" prefWidth="451.0">
+                           <children>
+                              <Label prefHeight="30.0" text="Label" />
+                              <TextField prefHeight="30.0" prefWidth="218.0" />
+                              <Label layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
+                              <TextField />
+                              <Label layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
+                              <TextField />
+                              <Label prefHeight="30.0" text="Label" />
+                              <ComboBox prefHeight="25.0" prefWidth="343.0" />
+                              <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="218.0">
+                                 <children>
+                                    <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="New Event Type" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="218.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Add Competitor" />
+                                    <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Delete Competitor">
+                                       <HBox.margin>
+                                          <Insets left="50.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_RIGHT" prefHeight="279.0" prefWidth="267.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="Next" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
