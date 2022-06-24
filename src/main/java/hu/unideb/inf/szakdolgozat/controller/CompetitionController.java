@@ -4,14 +4,17 @@ import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CompetitionController {
+public class CompetitionController extends AbstractController {
 
     @FXML
     public Label nameExceptionLabel;
@@ -35,16 +38,15 @@ public class CompetitionController {
     @FXML
     private TextField startTimeMinute;
 
-    private Competition competition;
 
-    public void next(ActionEvent actionEvent) {
+
+    @FXML
+    public void next(ActionEvent actionEvent) throws IOException {
         resetExceptionLabels();
 
         if (validate()) {
             creatCompetition();
-            System.out.println(competition);
-        } else {
-            System.out.println(LocalTime.MAX);
+            super.loadView("addCompetitorView.fxml",actionEvent);
         }
     }
 
@@ -96,5 +98,10 @@ public class CompetitionController {
         competition.setNumberOfLanes(Integer.parseInt(numberOfLanes.getText()));
         competition.setTimeOfBeginning(LocalDateTime.of(startTimeDate.getValue(),
                 LocalTime.of(Integer.parseInt(startTimeHour.getText()), Integer.parseInt(startTimeMinute.getText()))));
+    }
+
+    @Override
+    public void init(Competition competition) {
+        this.competition = competition;
     }
 }

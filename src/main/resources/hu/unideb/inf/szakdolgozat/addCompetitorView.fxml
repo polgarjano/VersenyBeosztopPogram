@@ -8,11 +8,39 @@
    <children>
       <VBox layoutX="-1.0">
          <children>
-            <HBox prefHeight="99.0" prefWidth="786.0" />
+            <HBox alignment="CENTER" prefHeight="99.0" prefWidth="786.0">
+               <children>
+                  <Label text="Competition name: " />
+                  <Label fx:id="competitionNameLabel" text="Label" />
+                  <Label text="Start time: ">
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="startTimeLabel" text="Label" />
+                  <Label text="No. Lanes: ">
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="numberOfLanesLabel" text="Label" />
+                  <Label accessibleRoleDescription=" " text="Delay betwen Relays: ">
+                     <padding>
+                        <Insets left="30.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="delayBetweenRelaysLabel" text="Label" />
+               </children></HBox>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="576.0" prefWidth="875.0">
                <children>
-                  <ListView prefHeight="576.0" prefWidth="492.0" />
-                  <HBox prefHeight="576.0" prefWidth="439.0">
+                  <TableView fx:id="table" prefHeight="576.0" prefWidth="492.0">
+                     <columns>
+                        <TableColumn fx:id="nameTableColum" prefWidth="156.0" text="Name" />
+                        <TableColumn fx:id="clubTableColum" prefWidth="140.0" text="Club" />
+                        <TableColumn fx:id="birthYearTableColum" minWidth="0.0" prefWidth="72.0" text="Birth Year" />
+                        <TableColumn fx:id="EventTypeTableColum" prefWidth="123.0" text="Event Type" />
+                     </columns></TableView>
+                  <HBox prefHeight="576.0" prefWidth="381.0">
                      <children>
                         <VBox prefHeight="576.0" prefWidth="197.0">
                            <children>
@@ -46,16 +74,16 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox prefHeight="576.0" prefWidth="451.0">
+                        <VBox prefHeight="576.0" prefWidth="359.0">
                            <children>
-                              <Label prefHeight="30.0" text="Label" />
-                              <TextField prefHeight="30.0" prefWidth="218.0" />
-                              <Label layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
-                              <TextField />
-                              <Label layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
-                              <TextField />
-                              <Label prefHeight="30.0" text="Label" />
-                              <ComboBox prefHeight="25.0" prefWidth="343.0" />
+                              <Label fx:id="nameExceptionLabel" prefHeight="30.0" text="Label" />
+                              <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="218.0" />
+                              <Label fx:id="ClubExceptionLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
+                              <TextField fx:id="clubTextField" />
+                              <Label fx:id="birthDayExceptionLabel" layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
+                              <TextField fx:id="birthYearTextField" />
+                              <Label fx:id="eventExceptionLabel" prefHeight="30.0" text="Label" />
+                              <ComboBox fx:id="eventTypeComboBox" prefHeight="25.0" prefWidth="343.0" />
                               <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="218.0">
                                  <children>
                                     <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="New Event Type" />
@@ -63,7 +91,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="50.0" prefWidth="218.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Add Competitor" />
+                                    <Button fx:id="AddCompetitorButton" mnemonicParsing="false" onAction="#AddCompetitor" text="Add Competitor" />
                                     <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Delete Competitor">
                                        <HBox.margin>
                                           <Insets left="50.0" />
