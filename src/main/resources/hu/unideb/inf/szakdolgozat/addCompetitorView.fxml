@@ -69,7 +69,7 @@
                               </Label>
                               <HBox alignment="BOTTOM_LEFT" prefHeight="348.0" prefWidth="161.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="Back" />
+                                    <Button mnemonicParsing="false" onAction="#Back" prefHeight="60.0" prefWidth="80.0" text="Back" />
                                  </children>
                               </HBox>
                            </children>
@@ -86,7 +86,7 @@
                               <ComboBox fx:id="eventTypeComboBox" prefHeight="25.0" prefWidth="343.0" />
                               <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="218.0">
                                  <children>
-                                    <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="New Event Type" />
+                                    <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#LoadNewEventView" text="New Event Type" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="50.0" prefWidth="218.0">

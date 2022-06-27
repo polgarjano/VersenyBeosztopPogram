@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -95,12 +96,20 @@ public class AddCompetitorViewController extends AbstractController {
         birthDayExceptionLabel.setText("");
         eventExceptionLabel.setText("");
     }
-
+    @FXML
     public void AddCompetitor(ActionEvent actionEvent) {
         EventType eventType = new EventType("lpi 60", LocalTime.of(0, 10),
                 LocalTime.of(0, 15), LocalTime.of(1, 15), 1);
         getCompetition().addCompetitor(new Competitor("kis andras", 22000, "xyClub",eventType,null ));
         table.refresh();
         System.out.println(getCompetition());
+    }
+    @FXML
+    public void LoadNewEventView(ActionEvent actionEvent) throws IOException {
+        super.loadView("AddNewEventType.fxml",actionEvent);
+    }
+    @FXML
+    public void Back(ActionEvent actionEvent) throws IOException {
+        super.loadView("competiton-view.fxml",actionEvent);
     }
 }

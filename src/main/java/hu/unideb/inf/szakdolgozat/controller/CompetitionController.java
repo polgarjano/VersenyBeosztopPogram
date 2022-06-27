@@ -39,14 +39,13 @@ public class CompetitionController extends AbstractController {
     private TextField startTimeMinute;
 
 
-
     @FXML
     public void next(ActionEvent actionEvent) throws IOException {
         resetExceptionLabels();
 
         if (validate()) {
             creatCompetition();
-            super.loadView("addCompetitorView.fxml",actionEvent);
+            super.loadView("addCompetitorView.fxml", actionEvent);
         }
     }
 
@@ -92,7 +91,7 @@ public class CompetitionController extends AbstractController {
 
     private void creatCompetition() {
         if (getCompetition() == null) {
-            setCompetition( new Competition());
+            setCompetition(new Competition());
         }
         getCompetition().setName(competitionName.getText());
         int delay = Integer.parseInt(delayBetweenRelays.getText());
@@ -105,5 +104,13 @@ public class CompetitionController extends AbstractController {
     @Override
     public void init(Competition competition) {
         setCompetition(competition);
+        competitionName.setText(competition.getName());
+        numberOfLanes.setText(competition.getNumberOfLanes().toString());
+        delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().getHour() * 60
+                + competition.getDelayBetweenRelays().getMinute()));
+        startTimeDate.setValue(competition.getTimeOfBeginning().toLocalDate());
+        startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
+        startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));
+
     }
 }

@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AddNewEventType extends AbstractController {
 
@@ -44,6 +46,7 @@ public class AddNewEventType extends AbstractController {
 
     @FXML
     public void saveButton(ActionEvent actionEvent) throws IOException {
+        initLabels();
         if (validate()) {
             EventType eventType = new EventType();
 
@@ -66,12 +69,14 @@ public class AddNewEventType extends AbstractController {
         }
     }
 
-    private LocalTime getLocalTimeFromMinutes(int time) {
-        return LocalTime.of(time / 60, time % 60);
-    }
 
     @FXML
-    public void backButton(ActionEvent actionEvent) {
+    public void backButton(ActionEvent actionEvent) throws IOException {
+        super.loadView("addCompetitorView.fxml", actionEvent);
+    }
+
+    private LocalTime getLocalTimeFromMinutes(int time) {
+        return LocalTime.of(time / 60, time % 60);
     }
 
     private void initLabels() {
@@ -84,7 +89,13 @@ public class AddNewEventType extends AbstractController {
 
     private boolean validate() {
         AbstractValidator<String> nameValidator = new StringNotEmptyValidator();
-        nameValidator.add(new IsUniqueValidator<EventType>(getCompetition().getEventTypes()));
+        nameValidator.add(new IsUniqueValidator<String>(
+                getCompetition().getEventTypes()
+                        .stream()
+                        .map(x -> x.getName())
+                        .collect(Collectors.toList())
+                )
+        );
 
         AbstractValidator<String> timesValidator = new StringNotEmptyValidator();
         timesValidator.add(new StringToIntegerValidator());

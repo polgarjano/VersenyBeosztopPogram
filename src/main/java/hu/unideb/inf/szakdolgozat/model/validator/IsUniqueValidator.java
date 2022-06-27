@@ -4,7 +4,7 @@ import javafx.scene.control.Label;
 
 import java.util.Collection;
 
-public class IsUniqueValidator<E> extends AbstractValidator<E>{
+public class IsUniqueValidator<E> extends AbstractValidator<E> {
 
     private Collection<E> collection;
 
@@ -14,7 +14,7 @@ public class IsUniqueValidator<E> extends AbstractValidator<E>{
 
     @Override
     boolean validate(E T) {
-        return collection.contains(T);
+        return !collection.contains(T);
     }
 
     @Override
