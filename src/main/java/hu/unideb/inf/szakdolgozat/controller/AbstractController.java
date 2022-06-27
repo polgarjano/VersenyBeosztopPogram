@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public abstract class AbstractController {
-    public Competition competition;
+    private Competition competition;
 
     public Competition getCompetition() {
         return competition;
@@ -21,6 +21,7 @@ public abstract class AbstractController {
     public void setCompetition(Competition competition) {
         this.competition = competition;
     }
+
 
     public void loadView(String viewName, ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(viewName));

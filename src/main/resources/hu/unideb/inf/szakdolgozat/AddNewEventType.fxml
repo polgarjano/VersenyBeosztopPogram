@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="304.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.AddNewEventType">
+   <children>
+      <VBox>
+         <children>
+            <Label prefHeight="43.0" prefWidth="509.0" text="Event type:" />
+            <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="308.0" prefWidth="509.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="308.0" prefWidth="504.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="180.0" text="Name" textAlignment="RIGHT">
+                                 <padding>
+                                    <Insets bottom="30.0" />
+                                 </padding>
+                              </Label>
+                              <VBox>
+                                 <children>
+                                    <Label fx:id="nameExceptionLabel" prefHeight="17.0" prefWidth="199.0" />
+                                    <TextField fx:id="nameTextField" prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="114.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="180.0" text="Preparation Time" textAlignment="RIGHT">
+                                 <padding>
+                                    <Insets bottom="30.0" />
+                                 </padding>
+                              </Label>
+                              <VBox>
+                                 <children>
+                                    <Label fx:id="preparationTimeException" prefHeight="17.0" prefWidth="199.0" />
+                                    <TextField fx:id="preparationTimeTextField" prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="164.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="180.0" text="Preparation And Sighting Time" textAlignment="RIGHT">
+                                 <padding>
+                                    <Insets bottom="30.0" />
+                                 </padding>
+                              </Label>
+                              <VBox>
+                                 <children>
+                                    <Label fx:id="preparationAndSightingTimeException" prefHeight="17.0" prefWidth="199.0" />
+                                    <TextField fx:id="preparationAndSightingTimeTextField" prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="214.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="180.0" text="Competition Time" textAlignment="RIGHT">
+                                 <padding>
+                                    <Insets bottom="30.0" />
+                                 </padding>
+                              </Label>
+                              <VBox>
+                                 <children>
+                                    <Label fx:id="competitionTimeException" prefHeight="17.0" prefWidth="199.0" />
+                                    <TextField fx:id="competitionTimeTextField" prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="241.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="180.0" text="Event Group" textAlignment="RIGHT">
+                                 <padding>
+                                    <Insets bottom="30.0" />
+                                 </padding>
+                              </Label>
+                              <VBox>
+                                 <children>
+                                    <Label fx:id="eventGroupException" prefHeight="17.0" prefWidth="199.0" />
+                                    <TextField fx:id="eventGroupTextField" prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="85.0" prefWidth="509.0">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button onAction="#backButton" layoutX="70.0" layoutY="15.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="84.0" text="Back" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button onAction="#saveButton" layoutX="51.0" layoutY="15.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="84.0" text="Save" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

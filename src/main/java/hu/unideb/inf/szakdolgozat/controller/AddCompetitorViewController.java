@@ -60,7 +60,7 @@ public class AddCompetitorViewController extends AbstractController {
 
     @Override
     public void init(Competition competition) {
-        this.competition = competition;
+       setCompetition(competition);
         initLabels();
         initTable();
 
@@ -71,24 +71,24 @@ public class AddCompetitorViewController extends AbstractController {
 
         EventType eventType = new EventType("lpi 60", LocalTime.of(0, 10),
                 LocalTime.of(0, 15), LocalTime.of(1, 15), 1);
-       competition.addCompetitor(new Competitor("kis andras", 2000, "xyClub",eventType,null ));
+       getCompetition().addCompetitor(new Competitor("kis andras", 2000, "xyClub",eventType,null ));
 
         nameTableColum.setCellValueFactory(new PropertyValueFactory<>("name"));
         clubTableColum.setCellValueFactory(new PropertyValueFactory<>("club"));
         birthYearTableColum.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
         EventTypeTableColum.setCellValueFactory(new PropertyValueFactory<>("eventTypeName"));
-        ObservableList<Competitor> observableSet = FXCollections.observableList(competition.getCompetitors());
+        ObservableList<Competitor> observableSet = FXCollections.observableList(getCompetition().getCompetitors());
         table.setItems(observableSet);
 
     }
 
     private void initLabels() {
-        competitionNameLabel.setText(competition.getName());
+        competitionNameLabel.setText(getCompetition().getName());
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        startTimeLabel.setText(competition.getTimeOfBeginning().format(dateFormat));
-        numberOfLanesLabel.setText(competition.getNumberOfLanes().toString());
+        startTimeLabel.setText(getCompetition().getTimeOfBeginning().format(dateFormat));
+        numberOfLanesLabel.setText(getCompetition().getNumberOfLanes().toString());
         dateFormat = DateTimeFormatter.ofPattern("HH:mm");
-        delayBetweenRelaysLabel.setText(competition.getDelayBetweenRelays().format(dateFormat));
+        delayBetweenRelaysLabel.setText(getCompetition().getDelayBetweenRelays().format(dateFormat));
 
         nameExceptionLabel.setText("");
         ClubExceptionLabel.setText("");
@@ -99,8 +99,8 @@ public class AddCompetitorViewController extends AbstractController {
     public void AddCompetitor(ActionEvent actionEvent) {
         EventType eventType = new EventType("lpi 60", LocalTime.of(0, 10),
                 LocalTime.of(0, 15), LocalTime.of(1, 15), 1);
-        competition.addCompetitor(new Competitor("kis andras", 22000, "xyClub",eventType,null ));
+        getCompetition().addCompetitor(new Competitor("kis andras", 22000, "xyClub",eventType,null ));
         table.refresh();
-        System.out.println(competition);
+        System.out.println(getCompetition());
     }
 }

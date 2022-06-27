@@ -91,17 +91,19 @@ public class CompetitionController extends AbstractController {
     }
 
     private void creatCompetition() {
-        competition = new Competition();
-        competition.setName(competitionName.getText());
+        if (getCompetition() == null) {
+            setCompetition( new Competition());
+        }
+        getCompetition().setName(competitionName.getText());
         int delay = Integer.parseInt(delayBetweenRelays.getText());
-        competition.setDelayBetweenRelays(LocalTime.of(delay / 60, delay % 60));
-        competition.setNumberOfLanes(Integer.parseInt(numberOfLanes.getText()));
-        competition.setTimeOfBeginning(LocalDateTime.of(startTimeDate.getValue(),
+        getCompetition().setDelayBetweenRelays(LocalTime.of(delay / 60, delay % 60));
+        getCompetition().setNumberOfLanes(Integer.parseInt(numberOfLanes.getText()));
+        getCompetition().setTimeOfBeginning(LocalDateTime.of(startTimeDate.getValue(),
                 LocalTime.of(Integer.parseInt(startTimeHour.getText()), Integer.parseInt(startTimeMinute.getText()))));
     }
 
     @Override
     public void init(Competition competition) {
-        this.competition = competition;
+        setCompetition(competition);
     }
 }

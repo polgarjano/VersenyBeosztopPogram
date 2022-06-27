@@ -18,6 +18,7 @@ public class Competition {
     private LocalTime DelayBetweenRelays;
     private ObservableList<Competitor> competitors = FXCollections.observableList(new ArrayList<>());
     private List<Schedule> schedules = new LinkedList<>();
+    private List<EventType> eventTypes = new LinkedList<>();
 
     public boolean addCompetitor(Competitor competitor){
         if(competitors.contains(competitor)) {
@@ -25,5 +26,9 @@ public class Competition {
         }
         competitors.add(competitor);
         return  true;
+    }
+
+    public  boolean addEventType(EventType eventType){
+        return  eventTypes.add(eventType);
     }
 }
