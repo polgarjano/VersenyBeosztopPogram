@@ -1,22 +1,31 @@
 package hu.unideb.inf.szakdolgozat.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
+@Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Competitor {
     private String name;
     private Integer birthYear;
     private String club;
     private EventType eventType;
+    @EqualsAndHashCode.Exclude
     private List<Constraint> Constrains;
+
 
     public String  getEventTypeName(){
         return  eventType.getName();
     }
+
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof Competitor;
+    }
+
 }

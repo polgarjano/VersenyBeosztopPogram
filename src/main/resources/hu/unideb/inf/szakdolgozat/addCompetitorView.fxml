@@ -78,7 +78,7 @@
                            <children>
                               <Label fx:id="nameExceptionLabel" prefHeight="30.0" text="Label" />
                               <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="218.0" />
-                              <Label fx:id="ClubExceptionLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
+                              <Label fx:id="clubExceptionLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
                               <TextField fx:id="clubTextField" />
                               <Label fx:id="birthDayExceptionLabel" layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
                               <TextField fx:id="birthYearTextField" />
@@ -89,9 +89,14 @@
                                     <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#LoadNewEventView" text="New Event Type" />
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="218.0">
+                              <HBox alignment="TOP_CENTER" prefHeight="94.0" prefWidth="272.0">
                                  <children>
-                                    <Button fx:id="AddCompetitorButton" mnemonicParsing="false" onAction="#AddCompetitor" text="Add Competitor" />
+                                    <VBox>
+                                       <children>
+                                          <Button fx:id="AddCompetitorButton" mnemonicParsing="false" onAction="#AddCompetitor" text="Add Competitor" />
+                                          <Label fx:id="addExceptionLabel" prefHeight="24.0" prefWidth="105.0" />
+                                       </children>
+                                    </VBox>
                                     <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Delete Competitor">
                                        <HBox.margin>
                                           <Insets left="50.0" />
@@ -99,7 +104,7 @@
                                     </Button>
                                  </children>
                               </HBox>
-                              <HBox alignment="BOTTOM_RIGHT" prefHeight="279.0" prefWidth="267.0">
+                              <HBox alignment="BOTTOM_RIGHT" prefHeight="230.0" prefWidth="272.0">
                                  <children>
                                     <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="Next" />
                                  </children>

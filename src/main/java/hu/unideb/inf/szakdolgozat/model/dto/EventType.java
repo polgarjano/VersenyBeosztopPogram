@@ -15,4 +15,9 @@ public class EventType {
     private LocalTime preparationAndSightingTime;
     private LocalTime competitionTime;
     private int eventGroup;
+
+    @Override
+    public String toString(){
+        return name;
+    }
 }

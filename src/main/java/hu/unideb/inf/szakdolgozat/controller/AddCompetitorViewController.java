@@ -3,19 +3,18 @@ package hu.unideb.inf.szakdolgozat.controller;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
+import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Set;
 
 public class AddCompetitorViewController extends AbstractController {
 
@@ -31,11 +30,13 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public Label nameExceptionLabel;
     @FXML
-    public Label ClubExceptionLabel;
+    public Label clubExceptionLabel;
     @FXML
     public Label birthDayExceptionLabel;
     @FXML
     public Label eventExceptionLabel;
+    @FXML
+    public Label addExceptionLabel;
 
     @FXML
     public TextField nameTextField;
@@ -61,25 +62,27 @@ public class AddCompetitorViewController extends AbstractController {
 
     @Override
     public void init(Competition competition) {
-       setCompetition(competition);
+        setCompetition(competition);
         initLabels();
         initTable();
+        initEventComboBox();
 
     }
+
 
     private void initTable() {
 
 
         EventType eventType = new EventType("lpi 60", LocalTime.of(0, 10),
                 LocalTime.of(0, 15), LocalTime.of(1, 15), 1);
-       getCompetition().addCompetitor(new Competitor("kis andras", 2000, "xyClub",eventType,null ));
+        getCompetition().addCompetitor(new Competitor("kis andras", 2000, "xyClub", eventType, null));
 
         nameTableColum.setCellValueFactory(new PropertyValueFactory<>("name"));
         clubTableColum.setCellValueFactory(new PropertyValueFactory<>("club"));
         birthYearTableColum.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
         EventTypeTableColum.setCellValueFactory(new PropertyValueFactory<>("eventTypeName"));
-        ObservableList<Competitor> observableSet = FXCollections.observableList(getCompetition().getCompetitors());
-        table.setItems(observableSet);
+        ObservableList<Competitor> observableList = FXCollections.observableList(getCompetition().getCompetitors());
+        table.setItems(observableList);
 
     }
 
@@ -91,25 +94,64 @@ public class AddCompetitorViewController extends AbstractController {
         dateFormat = DateTimeFormatter.ofPattern("HH:mm");
         delayBetweenRelaysLabel.setText(getCompetition().getDelayBetweenRelays().format(dateFormat));
 
+        resetExceptionLabels();
+    }
+    private void initEventComboBox() {
+        ObservableList<EventType> eventType = FXCollections.observableList(getCompetition().getEventTypes());
+        eventTypeComboBox.setItems(eventType);
+    }
+
+
+    private void resetExceptionLabels() {
         nameExceptionLabel.setText("");
-        ClubExceptionLabel.setText("");
+        clubExceptionLabel.setText("");
         birthDayExceptionLabel.setText("");
         eventExceptionLabel.setText("");
+        addExceptionLabel.setText("");
     }
+
     @FXML
     public void AddCompetitor(ActionEvent actionEvent) {
-        EventType eventType = new EventType("lpi 60", LocalTime.of(0, 10),
-                LocalTime.of(0, 15), LocalTime.of(1, 15), 1);
-        getCompetition().addCompetitor(new Competitor("kis andras", 22000, "xyClub",eventType,null ));
+        resetExceptionLabels();
+        if (validate()) {
+            Competitor competitor = new Competitor(nameTextField.getText(),
+                    Integer.parseInt(birthYearTextField.getText()),
+                    clubTextField.getText(),
+                    eventTypeComboBox.getValue(),
+                    null
+            );
+
+            if (!getCompetition().addCompetitor(competitor)){
+                addExceptionLabel.setText("Competitor already in the list");
+            }
+        }
         table.refresh();
         System.out.println(getCompetition());
     }
+
     @FXML
     public void LoadNewEventView(ActionEvent actionEvent) throws IOException {
-        super.loadView("AddNewEventType.fxml",actionEvent);
+        super.loadView("AddNewEventType.fxml", actionEvent);
     }
+
     @FXML
     public void Back(ActionEvent actionEvent) throws IOException {
-        super.loadView("competiton-view.fxml",actionEvent);
+        super.loadView("competiton-view.fxml", actionEvent);
+    }
+
+    private boolean validate() {
+        AbstractValidator<String> notEmptyString = new StringNotEmptyValidator();
+
+        AbstractValidator<String> birthYearValidator = new StringNotEmptyValidator();
+        birthYearValidator.add(new StringToIntegerValidator());
+        birthYearValidator.add(new MaxIntegerValueValidator(LocalDate.now().getYear()));
+
+        AbstractValidator<Object> eventTypeValidator = new NotNullValidator();
+
+
+        return (notEmptyString.execute(nameTextField.getText(), nameExceptionLabel)
+                & notEmptyString.execute(clubTextField.getText(), clubExceptionLabel)
+                & birthYearValidator.execute(birthYearTextField.getText(), birthDayExceptionLabel)
+                & eventTypeValidator.execute(eventTypeComboBox.getValue(), eventExceptionLabel));
     }
 }
