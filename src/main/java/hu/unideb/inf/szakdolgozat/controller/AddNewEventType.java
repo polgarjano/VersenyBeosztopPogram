@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,13 +54,13 @@ public class AddNewEventType extends AbstractController {
             eventType.setName(nameTextField.getText());
 
             int time = Integer.parseInt(preparationTimeTextField.getText());
-            eventType.setPreparationTime(getLocalTimeFromMinutes(time));
+            eventType.setPreparationTime(Duration.ofMinutes(time));
 
             time = Integer.parseInt(preparationAndSightingTimeTextField.getText());
-            eventType.setPreparationAndSightingTime(getLocalTimeFromMinutes(time));
+            eventType.setPreparationAndSightingTime(Duration.ofMinutes(time));
 
             time = Integer.parseInt(competitionTimeTextField.getText());
-            eventType.setPreparationAndSightingTime(getLocalTimeFromMinutes(time));
+            eventType.setPreparationAndSightingTime(Duration.ofMinutes(time));
 
             eventType.setEventGroup(Integer.parseInt(eventGroupTextField.getText()));
 
@@ -75,9 +76,6 @@ public class AddNewEventType extends AbstractController {
         super.loadView("addCompetitorView.fxml", actionEvent);
     }
 
-    private LocalTime getLocalTimeFromMinutes(int time) {
-        return LocalTime.of(time / 60, time % 60);
-    }
 
     private void initLabels() {
         eventGroupException.setText("");

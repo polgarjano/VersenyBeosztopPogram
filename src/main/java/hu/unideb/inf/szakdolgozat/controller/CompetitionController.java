@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -77,9 +78,6 @@ public class CompetitionController extends AbstractController {
         AbstractValidator<String> delayValidator = new StringNotEmptyValidator();
         delayValidator.add(new StringToIntegerValidator());
         delayValidator.add(new PositiveIntegerValidator());
-        delayValidator.add(new MaxIntegerValueValidator(
-                (LocalTime.MAX.getHour() * 60) + LocalTime.MAX.getMinute())
-        );
 
         return (NameValidator.execute(competitionName.getText(), nameExceptionLabel)
                 & startDateValidator.execute(startTimeDate.getValue(), timeExceptionLabel)
@@ -94,8 +92,7 @@ public class CompetitionController extends AbstractController {
             setCompetition(new Competition());
         }
         getCompetition().setName(competitionName.getText());
-        int delay = Integer.parseInt(delayBetweenRelays.getText());
-        getCompetition().setDelayBetweenRelays(LocalTime.of(delay / 60, delay % 60));
+        getCompetition().setDelayBetweenRelays(Duration.ofMinutes(Integer.parseInt(delayBetweenRelays.getText())));
         getCompetition().setNumberOfLanes(Integer.parseInt(numberOfLanes.getText()));
         getCompetition().setTimeOfBeginning(LocalDateTime.of(startTimeDate.getValue(),
                 LocalTime.of(Integer.parseInt(startTimeHour.getText()), Integer.parseInt(startTimeMinute.getText()))));
@@ -106,8 +103,7 @@ public class CompetitionController extends AbstractController {
         setCompetition(competition);
         competitionName.setText(competition.getName());
         numberOfLanes.setText(competition.getNumberOfLanes().toString());
-        delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().getHour() * 60
-                + competition.getDelayBetweenRelays().getMinute()));
+        delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().toMinutes()));
         startTimeDate.setValue(competition.getTimeOfBeginning().toLocalDate());
         startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
         startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));

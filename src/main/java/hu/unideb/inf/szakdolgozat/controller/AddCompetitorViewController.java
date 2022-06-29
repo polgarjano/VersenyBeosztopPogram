@@ -82,8 +82,7 @@ public class AddCompetitorViewController extends AbstractController {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         startTimeLabel.setText(getCompetition().getTimeOfBeginning().format(dateFormat));
         numberOfLanesLabel.setText(getCompetition().getNumberOfLanes().toString());
-        dateFormat = DateTimeFormatter.ofPattern("HH:mm");
-        delayBetweenRelaysLabel.setText(getCompetition().getDelayBetweenRelays().format(dateFormat));
+        delayBetweenRelaysLabel.setText(String.valueOf(getCompetition().getDelayBetweenRelays().toMinutes()));
 
         resetExceptionLabels();
     }
@@ -144,5 +143,9 @@ public class AddCompetitorViewController extends AbstractController {
                 & notEmptyString.execute(clubTextField.getText(), clubExceptionLabel)
                 & birthYearValidator.execute(birthYearTextField.getText(), birthDayExceptionLabel)
                 & eventTypeValidator.execute(eventTypeComboBox.getValue(), eventExceptionLabel));
+    }
+
+    @FXML
+    public void DeletCompetitor(ActionEvent actionEvent) {
     }
 }

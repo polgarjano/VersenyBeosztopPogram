@@ -4,20 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.Duration;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventType {
     private String name;
-    private LocalTime preparationTime;
-    private LocalTime preparationAndSightingTime;
-    private LocalTime competitionTime;
+    private Duration preparationTime;
+    private Duration preparationAndSightingTime;
+    private Duration competitionTime;
     private int eventGroup;
 
     @Override
     public String toString(){
         return name;
+    }
+
+    public Duration getDuration(){
+        return preparationTime.plus(preparationAndSightingTime).plus(competitionTime);
     }
 }
