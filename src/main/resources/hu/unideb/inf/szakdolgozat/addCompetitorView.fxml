@@ -94,10 +94,10 @@
                                     <VBox>
                                        <children>
                                           <Button fx:id="AddCompetitorButton" mnemonicParsing="false" onAction="#AddCompetitor" text="Add Competitor" />
-                                          <Label fx:id="addExceptionLabel" prefHeight="24.0" prefWidth="105.0" />
+                                          <Label fx:id="addExceptionLabel" prefHeight="75.0" prefWidth="105.0" wrapText="true" />
                                        </children>
                                     </VBox>
-                                    <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Delete Competitor">
+                                    <Button mnemonicParsing="false" onAction="#DeletCompetitor" prefHeight="25.0" prefWidth="118.0" text="Delete Competitor">
                                        <HBox.margin>
                                           <Insets left="50.0" />
                                        </HBox.margin>

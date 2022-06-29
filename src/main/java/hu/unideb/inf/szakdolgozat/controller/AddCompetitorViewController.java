@@ -58,24 +58,15 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public TableView<Competitor> table;
 
-
-
     @Override
     public void init(Competition competition) {
         setCompetition(competition);
         initLabels();
         initTable();
         initEventComboBox();
-
     }
 
-
     private void initTable() {
-
-
-        EventType eventType = new EventType("lpi 60", LocalTime.of(0, 10),
-                LocalTime.of(0, 15), LocalTime.of(1, 15), 1);
-        getCompetition().addCompetitor(new Competitor("kis andras", 2000, "xyClub", eventType, null));
 
         nameTableColum.setCellValueFactory(new PropertyValueFactory<>("name"));
         clubTableColum.setCellValueFactory(new PropertyValueFactory<>("club"));
@@ -96,11 +87,11 @@ public class AddCompetitorViewController extends AbstractController {
 
         resetExceptionLabels();
     }
+
     private void initEventComboBox() {
         ObservableList<EventType> eventType = FXCollections.observableList(getCompetition().getEventTypes());
         eventTypeComboBox.setItems(eventType);
     }
-
 
     private void resetExceptionLabels() {
         nameExceptionLabel.setText("");
@@ -121,7 +112,7 @@ public class AddCompetitorViewController extends AbstractController {
                     null
             );
 
-            if (!getCompetition().addCompetitor(competitor)){
+            if (!getCompetition().addCompetitor(competitor)) {
                 addExceptionLabel.setText("Competitor already in the list");
             }
         }
