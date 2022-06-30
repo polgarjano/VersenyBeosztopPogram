@@ -14,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AddCompetitorViewController extends AbstractController {
@@ -149,9 +148,16 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public void DeletCompetitor(ActionEvent actionEvent) {
     }
+
     @FXML
-    public void NextButten(ActionEvent actionEvent) {
+    public void NextButten(ActionEvent actionEvent) throws IOException {
+        loadView("Schedule-view.fxml", actionEvent);
+    }
+
+    @FXML
+    public void GenerateNewScheduledButton(ActionEvent actionEvent) throws IOException {
         SimpleAssigner assigner = new SimpleAssigner();
         getCompetition().getSchedules().add(assigner.creatStartList(getCompetition()));
+        loadView("Schedule-view.fxml", actionEvent);
     }
 }

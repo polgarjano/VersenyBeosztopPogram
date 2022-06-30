@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class ScheduledCompetitor {
     private String relayNumber;
     private String startTime;
@@ -33,7 +32,8 @@ public class ScheduledCompetitor {
     public static ScheduledCompetitor getRelayRoot(Relay relay) {
         String eventTypeNames = relay.getCompetitors().stream()
                 .map(Competitor::getEventTypeName)
-                .map(x -> x + " \n ")
+                .distinct()
+                .map(x -> x + "\n")
                 .reduce("", String::concat);
         return new ScheduledCompetitor(String.valueOf(relay.getNumberOfTheRelay()), relay.getStartTime().toString(), relay.getEndTime().toString(), "", "", "", "", eventTypeNames);
     }

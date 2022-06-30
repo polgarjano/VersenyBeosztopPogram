@@ -3,23 +3,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.ScheduleViewController">
+<AnchorPane prefHeight="496.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.ScheduleViewController">
    <children>
-      <VBox alignment="BOTTOM_CENTER" prefHeight="400.0" prefWidth="600.0">
+      <VBox alignment="BOTTOM_CENTER" prefHeight="496.0" prefWidth="769.0">
          <children>
-            <TreeTableView fx:id="TreeTableView" prefHeight="301.0" prefWidth="600.0">
+            <TreeTableView fx:id="TreeTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="389.0" prefWidth="769.0">
               <columns>
-                <TreeTableColumn fx:id="relayNumber" prefWidth="75.0" text="Relay No." />
-                <TreeTableColumn fx:id="startTime" prefWidth="75.0" text="Start Time" />
-                  <TreeTableColumn fx:id="endTime" prefWidth="75.0" text="End Time" />
-                  <TreeTableColumn fx:id="fireingPalce" prefWidth="75.0" text="FP" />
-                  <TreeTableColumn fx:id="name" prefWidth="75.0" text="Name" />
-                  <TreeTableColumn fx:id="club" prefWidth="75.0" text="Club" />
-                  <TreeTableColumn fx:id="birthYear" prefWidth="75.0" text="Birth Year" />
-                  <TreeTableColumn fx:id="eventType" prefWidth="75.0" text="Event Type" />
+                <TreeTableColumn fx:id="relayNumber" prefWidth="130.0" text="Relay No." />
+                <TreeTableColumn fx:id="startTime" prefWidth="70.0" text="Start Time" />
+                  <TreeTableColumn fx:id="endTime" prefWidth="82.0" text="End Time" />
+                  <TreeTableColumn fx:id="fireingPalce" prefWidth="34.0" text="FP" />
+                  <TreeTableColumn fx:id="name" prefWidth="118.0" text="Name" />
+                  <TreeTableColumn fx:id="club" minWidth="0.0" prefWidth="64.0" text="Club" />
+                  <TreeTableColumn fx:id="birthYear" prefWidth="77.0" text="Birth Year" />
+                  <TreeTableColumn fx:id="eventType" prefWidth="156.0" text="Event Type" />
               </columns>
             </TreeTableView>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="103.0" prefWidth="597.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#back" prefHeight="53.0" prefWidth="72.0" text="Back" textAlignment="CENTER" />
                   <Button layoutX="274.0" layoutY="34.0" mnemonicParsing="false" onAction="#save" prefHeight="53.0" prefWidth="72.0" text="Save" textAlignment="CENTER" />

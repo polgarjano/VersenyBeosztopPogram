@@ -46,6 +46,7 @@ public class ScheduleViewController extends AbstractController {
 
     @Override
     public void init(Competition competition) {
+        setCompetition(competition);
         initTableColum();
         TreeTableView.setRoot(getScheduleTree(competition.getSchedules()));
     }
