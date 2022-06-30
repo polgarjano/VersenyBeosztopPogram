@@ -106,7 +106,7 @@
                               </HBox>
                               <HBox alignment="BOTTOM_RIGHT" prefHeight="230.0" prefWidth="272.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" text="Next" />
+                                    <Button mnemonicParsing="false" onAction="#NextButten" prefHeight="60.0" prefWidth="80.0" text="Next" />
                                  </children>
                               </HBox>
                            </children>

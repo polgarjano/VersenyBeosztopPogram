@@ -60,11 +60,14 @@ public class AddNewEventType extends AbstractController {
             eventType.setPreparationAndSightingTime(Duration.ofMinutes(time));
 
             time = Integer.parseInt(competitionTimeTextField.getText());
-            eventType.setPreparationAndSightingTime(Duration.ofMinutes(time));
+
+            eventType.setCompetitionTime(Duration.ofMinutes(time));
 
             eventType.setEventGroup(Integer.parseInt(eventGroupTextField.getText()));
 
             getCompetition().addEventType(eventType);
+
+            System.out.println(eventType.getCompetitionTime());
 
             super.loadView("addCompetitorView.fxml", actionEvent);
         }

@@ -1,5 +1,6 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
+import hu.unideb.inf.szakdolgozat.model.assigner.SimpleAssigner;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
@@ -147,5 +148,10 @@ public class AddCompetitorViewController extends AbstractController {
 
     @FXML
     public void DeletCompetitor(ActionEvent actionEvent) {
+    }
+    @FXML
+    public void NextButten(ActionEvent actionEvent) {
+        SimpleAssigner assigner = new SimpleAssigner();
+        System.out.println( assigner.creatStartList(getCompetition()).toString());
     }
 }

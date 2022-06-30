@@ -6,12 +6,11 @@ import hu.unideb.inf.szakdolgozat.model.dto.Relay;
 import hu.unideb.inf.szakdolgozat.model.dto.Schedule;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class simpleAssigner {
+public class SimpleAssigner {
 
     private List<Relay> relays = new LinkedList<>();
 
@@ -35,7 +34,7 @@ public class simpleAssigner {
         for (int i = 0; i < relays.size(); i++) {
             relays.get(i).setEndTime( relays.get(i).getStartTime().plus(getDurationOfTheRelay(relays.get(i).getCompetitors())));
             if ((i + 1) < relays.size()) {
-                relays.get(1+1).setStartTime(relays.get(i).getEndTime().plus(competition.getDelayBetweenRelays()));
+                relays.get(i+1).setStartTime(relays.get(i).getEndTime().plus(competition.getDelayBetweenRelays()));
             }
         }
 
