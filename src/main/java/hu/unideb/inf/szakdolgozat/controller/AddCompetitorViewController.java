@@ -152,6 +152,6 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public void NextButten(ActionEvent actionEvent) {
         SimpleAssigner assigner = new SimpleAssigner();
-        System.out.println( assigner.creatStartList(getCompetition()).toString());
+        getCompetition().getSchedules().add(assigner.creatStartList(getCompetition()));
     }
 }
