@@ -16,33 +16,36 @@ public class SimpleAssigner {
 
     public Schedule creatStartList(Competition competition) {
         List<Competitor> allCompetitor = competition.getCompetitors()
-                .stream().sorted((o1, o2) -> o1.getEventTypeName().compareTo(o2.getEventTypeName()))
-                .collect(Collectors.toList());
-        int numberOfRelays = allCompetitor.size() / competition.getNumberOfLanes();
-        for (int i = 1; i <= numberOfRelays; i++) {
-            Relay actualRelay = new Relay();
-            List<Competitor> competitorsInRelay = new LinkedList<>();
-            for (int j = 1; j <= competition.getNumberOfLanes(); j++) {
-                competitorsInRelay.add(allCompetitor.get((competition.getNumberOfLanes() * (i - 1)) + j - 1));
+                .stream()
+                .sorted((o1, o2) -> o1.getEventTypeName().compareTo(o2.getEventTypeName()))
+                .toList();
+
+        int indexOfTheRelay = 0;
+        Relay currentRelay = new Relay();
+        currentRelay.setNumberOfTheRelay(indexOfTheRelay);
+        relays.add(currentRelay);
+        for (Competitor competitor : allCompetitor) {
+            if (relays.get(indexOfTheRelay).size() == competition.getNumberOfLanes()) {
+                currentRelay = new Relay();
+                currentRelay.setNumberOfTheRelay(indexOfTheRelay+1);
+                indexOfTheRelay = ++indexOfTheRelay;
+                relays.add(currentRelay);
             }
-            actualRelay.setCompetitors(competitorsInRelay);
-            actualRelay.setNumberOfTheRelay(i);
-            relays.add(actualRelay);
+            relays.get(indexOfTheRelay).addCompetitor(competitor);
         }
 
         relays.get(0).setStartTime(competition.getTimeOfBeginning().toLocalTime());
         for (int i = 0; i < relays.size(); i++) {
-            relays.get(i).setEndTime( relays.get(i).getStartTime().plus(getDurationOfTheRelay(relays.get(i).getCompetitors())));
+            relays.get(i).setEndTime(relays.get(i).getStartTime().plus(getDurationOfTheRelay(relays.get(i).getCompetitors())));
             if ((i + 1) < relays.size()) {
-                relays.get(i+1).setStartTime(relays.get(i).getEndTime().plus(competition.getDelayBetweenRelays()));
+                relays.get(i + 1).setStartTime(relays.get(i).getEndTime().plus(competition.getDelayBetweenRelays()));
             }
         }
-
         return new Schedule(relays);
     }
 
     private Duration getDurationOfTheRelay(List<Competitor> competitors) {
-        return  competitors
+        return competitors
                 .stream()
                 .map(x -> x.getEventType().getDuration())
                 .max(Duration::compareTo).orElse(Duration.ZERO);
