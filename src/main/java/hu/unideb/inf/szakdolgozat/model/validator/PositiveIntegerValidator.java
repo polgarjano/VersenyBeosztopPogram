@@ -6,7 +6,7 @@ public class PositiveIntegerValidator extends AbstractValidator<String>{
     @Override
     boolean validate(String T) {
         int value = Integer.parseInt(T);
-        return  value >=0 ;
+        return  value >0 ;
     }
 
     @Override

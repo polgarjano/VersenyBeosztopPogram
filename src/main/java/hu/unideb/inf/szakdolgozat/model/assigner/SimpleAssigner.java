@@ -48,7 +48,8 @@ public class SimpleAssigner {
         return competitors
                 .stream()
                 .map(x -> x.getEventType().getDuration())
-                .max(Duration::compareTo).orElse(Duration.ZERO);
+                .max(Duration::compareTo)
+                .orElse(Duration.ZERO);
 
     }
 }
