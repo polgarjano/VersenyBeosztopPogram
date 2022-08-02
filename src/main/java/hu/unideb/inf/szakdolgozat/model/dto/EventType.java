@@ -16,6 +16,7 @@ public class EventType {
     private Duration preparationAndSightingTime;
     private Duration competitionTime;
     private int eventGroup;
+    private boolean IsPistolEvent;
 
     @Override
     public String toString(){

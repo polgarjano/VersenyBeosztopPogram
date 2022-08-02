@@ -73,7 +73,7 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="10.0" layoutY="241.0" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="256.0" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="180.0" text="Event Group" textAlignment="RIGHT">
                                  <padding>
@@ -88,6 +88,19 @@
                               </VBox>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="256.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <RadioButton fx:id="pistolRadioButton" mnemonicParsing="false" selected="true" text="Pistol">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="pistolOrRifle" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Rifle" toggleGroup="$pistolOrRifle" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
@@ -96,12 +109,12 @@
                <children>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button onAction="#backButton" layoutX="70.0" layoutY="15.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="84.0" text="Back" />
+                        <Button layoutX="70.0" layoutY="15.0" mnemonicParsing="false" onAction="#backButton" prefHeight="56.0" prefWidth="84.0" text="Back" />
                      </children>
                   </Pane>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button onAction="#saveButton" layoutX="51.0" layoutY="15.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="84.0" text="Save" />
+                        <Button layoutX="51.0" layoutY="15.0" mnemonicParsing="false" onAction="#saveButton" prefHeight="56.0" prefWidth="84.0" text="Save" />
                      </children>
                   </Pane>
                </children>

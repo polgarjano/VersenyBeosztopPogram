@@ -6,13 +6,14 @@ import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AddNewEventType extends AbstractController {
 
@@ -38,6 +39,10 @@ public class AddNewEventType extends AbstractController {
     public Label preparationTimeException;
     @FXML
     public Label nameExceptionLabel;
+    @FXML
+    public ToggleGroup pistolOrRifle;
+    @FXML
+    public RadioButton pistolRadioButton;
 
     @Override
     public void init(Competition competition) {
@@ -65,9 +70,11 @@ public class AddNewEventType extends AbstractController {
 
             eventType.setEventGroup(Integer.parseInt(eventGroupTextField.getText()));
 
-            getCompetition().addEventType(eventType);
+            eventType.setIsPistolEvent(pistolRadioButton.isSelected());
 
-            System.out.println(eventType.getCompetitionTime());
+            System.out.println(eventType.isIsPistolEvent());
+
+            getCompetition().addEventType(eventType);
 
             super.loadView("addCompetitorView.fxml", actionEvent);
         }

@@ -1,5 +1,6 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
+import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner;
 import hu.unideb.inf.szakdolgozat.model.assigner.SimpleAssigner;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
@@ -156,7 +157,8 @@ public class AddCompetitorViewController extends AbstractController {
 
     @FXML
     public void GenerateNewScheduledButton(ActionEvent actionEvent) throws IOException {
-        SimpleAssigner assigner = new SimpleAssigner();
+       // SimpleAssigner assigner = new SimpleAssigner();
+        MiAssigner assigner = new MiAssigner();
         getCompetition().getSchedules().add(assigner.creatStartList(getCompetition()));
         loadView("Schedule-view.fxml", actionEvent);
     }
