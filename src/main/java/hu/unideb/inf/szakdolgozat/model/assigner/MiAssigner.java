@@ -28,7 +28,7 @@ public class MiAssigner {
     }
 
     private void creatTree() {
-       while (perem.size()!=0){
+        while (perem.size() != 0) {
             EventNode eventNode = perem.poll();
             Set<EventType> scheduledEvents = new HashSet<>();
             scheduledEvents.add(eventNode.eventType);
@@ -44,19 +44,19 @@ public class MiAssigner {
             if (nextEventIsPistol != eventNode.eventType.isIsPistolEvent()) {
                 groupPosition = 0;
             }
-                for (int i = groupPosition; i < choseAbelGroups.size(); i++) {
-                    boolean added = false;
-                    for (CompetitionEvent event :
-                            choseAbelGroups.get(i)) {
-                        if (event.eventType.isIsPistolEvent() == nextEventIsPistol && !scheduledEvents.contains(event.eventType)) {
-                            perem.addLast(eventNode.add(event.eventType, 1, 0));
-                            added = true;
-                        }
-                    }
-                    if(added){
-                        break;
+            for (int i = groupPosition; i < choseAbelGroups.size(); i++) {
+                boolean added = false;
+                for (CompetitionEvent event :
+                        choseAbelGroups.get(i)) {
+                    if (event.eventType.isIsPistolEvent() == nextEventIsPistol && !scheduledEvents.contains(event.eventType)) {
+                        perem.addLast(eventNode.add(event.eventType, 1, 0));
+                        added = true;
                     }
                 }
+                if (added) {
+                    break;
+                }
+            }
 
         }
     }
@@ -82,8 +82,9 @@ public class MiAssigner {
 
     private int findGroup(int eventGroup) {
         for (int i = 0; i < choseAbelGroups.size(); i++) {
-            if (choseAbelGroups.get(i).get(0).eventType.getEventGroup() == eventGroup) ;
-            return i;
+            if (choseAbelGroups.get(i).get(0).eventType.getEventGroup() == eventGroup) {
+                return i;
+            }
         }
         return -1;
     }
