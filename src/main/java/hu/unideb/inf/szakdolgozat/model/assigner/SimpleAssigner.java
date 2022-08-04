@@ -27,7 +27,7 @@ public class SimpleAssigner {
         for (Competitor competitor : allCompetitor) {
             if (relays.get(indexOfTheRelay).size() == competition.getNumberOfLanes()) {
                 currentRelay = new Relay();
-                currentRelay.setNumberOfTheRelay(indexOfTheRelay+1);
+                currentRelay.setNumberOfTheRelay(indexOfTheRelay + 1);
                 indexOfTheRelay = ++indexOfTheRelay;
                 relays.add(currentRelay);
             }

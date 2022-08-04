@@ -158,8 +158,8 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public void GenerateNewScheduledButton(ActionEvent actionEvent) throws IOException {
        // SimpleAssigner assigner = new SimpleAssigner();
-        MiAssigner assigner = new MiAssigner();
-        getCompetition().getSchedules().add(assigner.creatStartList(getCompetition()));
+        MiAssigner assigner = new MiAssigner(getCompetition());
+        getCompetition().getSchedules().add(assigner.creatStartList());
         loadView("Schedule-view.fxml", actionEvent);
     }
 }

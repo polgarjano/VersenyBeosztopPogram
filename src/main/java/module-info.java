@@ -2,6 +2,7 @@ module hu.unideb.inf.szakdolgozat {
     requires javafx.controls;
     requires javafx.fxml;
     requires lombok;
+    requires org.junit.jupiter.api;
 
 
     opens hu.unideb.inf.szakdolgozat to javafx.fxml;
