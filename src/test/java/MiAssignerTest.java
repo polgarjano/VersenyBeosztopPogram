@@ -30,22 +30,11 @@ public class MiAssignerTest {
         eventTypes.add(new EventType("b211",duration2,duration2,duration2,2,false));
 
         competitors.add(new Competitor("Competitor",2000,"club",eventTypes.get(1),null));
-        competitors.add(new Competitor("Competitor1",2000,"club",eventTypes.get(1),null));
+        //competitors.add(new Competitor("Competitor1",2000,"club",eventTypes.get(1),null));
         competitors.add(new Competitor("Competitor3",2000,"club",eventTypes.get(1),null));
-        competitors.add(new Competitor("Competitor4",2000,"club",eventTypes.get(2),null));
-        competitors.add(new Competitor("Competitor5",2000,"club",eventTypes.get(2),null));
-        competitors.add(new Competitor("Competitor6",2000,"club",eventTypes.get(3),null));
-        competitors.add(new Competitor("Competitor7",2000,"club",eventTypes.get(3),null));
-        competitors.add(new Competitor("Competitor8",2000,"club",eventTypes.get(4),null));
-        competitors.add(new Competitor("Competitor9",2000,"club",eventTypes.get(4),null));
-        competitors.add(new Competitor("Competitor10",2000,"club",eventTypes.get(5),null));
-        competitors.add(new Competitor("Competitor11",2000,"club",eventTypes.get(5),null));
-        competitors.add(new Competitor("Competitor12",2000,"club",eventTypes.get(6),null));
-        competitors.add(new Competitor("Competitor121",2000,"club",eventTypes.get(0),null));
-        competitors.add(new Competitor("Competitor1211",2000,"club",eventTypes.get(0),null));
-        competitors.add(new Competitor("Competitor12111",2000,"club",eventTypes.get(7),null));
-        competitors.add(new Competitor("Competitor121111",2000,"club",eventTypes.get(7),null));
-        competitors.add(new Competitor("Competitor1211111",2000,"club",eventTypes.get(7),null));
+
+      //  competitors.add(new Competitor("Competitor121",2000,"club",eventTypes.get(0),null));
+
 
 
     }
@@ -55,7 +44,7 @@ public class MiAssignerTest {
         //Given
 
         Competition competition =new Competition();
-        competition.setNumberOfLanes(100);
+        competition.setNumberOfLanes(1);
         competition.setTimeOfBeginning(LocalDateTime.of(2022,8,4,8,0));
         competition.setDelayBetweenRelays(Duration.ofMinutes(10));
         competitors.forEach(competition::addCompetitor);

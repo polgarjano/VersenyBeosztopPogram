@@ -40,7 +40,7 @@ public class MiAssigner {
                         numberOfTheLanes,
                         competition.getTimeOfBeginning().toLocalTime(),
                         competition.getTimeOfBeginning().plus(eventType.getDuration()).toLocalTime());
-                while (numberOfTheNotScheduledCompetitors >= 0) {
+                while (numberOfTheNotScheduledCompetitors > 0) {
                     numberOfTheRelay++;
                     freeLanes = numberOfTheLanes - numberOfTheNotScheduledCompetitors;
                     numberOfTheNotScheduledCompetitors = numberOfTheNotScheduledCompetitors - numberOfTheLanes;
