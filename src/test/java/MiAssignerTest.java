@@ -1,4 +1,4 @@
-import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner;
+import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner.MiAssigner;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
@@ -17,35 +17,42 @@ public class MiAssignerTest {
     final List<Competitor> competitors = new LinkedList<>();
 
     @BeforeAll
-    void creatCompetitors(){
+    void creatCompetitors() {
         var duration = Duration.ofMinutes(10);
         var duration2 = Duration.ofMinutes(20);
-        eventTypes.add(new EventType("a1",duration,duration,duration,1,true));
-        eventTypes.add(new EventType("b1",duration,duration,duration,1,true));
-        eventTypes.add(new EventType("c1",duration2,duration2,duration2,1,false));
-        eventTypes.add(new EventType("d1",duration,duration,duration,1,false));//
-        eventTypes.add(new EventType("a2",duration,duration,duration,2,true));
-        eventTypes.add(new EventType("b2",duration2,duration2,duration2,2,false));
-        eventTypes.add(new EventType("b21",duration,duration,duration,2,true));
-        eventTypes.add(new EventType("b211",duration2,duration2,duration2,2,false));
+        eventTypes.add(new EventType("a1", duration, duration, duration, 1, false));
+        eventTypes.add(new EventType("b1", duration, duration, duration, 1, false));
+        eventTypes.add(new EventType("c1", duration2, duration2, duration2, 1, true));
+        eventTypes.add(new EventType("d1", duration, duration, duration, 1, true));//
+        eventTypes.add(new EventType("a2", duration, duration, duration, 2, true));
+        eventTypes.add(new EventType("b2", duration2, duration2, duration2, 2, false));
+        eventTypes.add(new EventType("b21", duration, duration, duration, 2, true));
+        eventTypes.add(new EventType("b211", duration2, duration2, duration2, 2, false));
 
-        competitors.add(new Competitor("Competitor",2000,"club",eventTypes.get(1),null));
-        //competitors.add(new Competitor("Competitor1",2000,"club",eventTypes.get(1),null));
-        competitors.add(new Competitor("Competitor3",2000,"club",eventTypes.get(1),null));
+        competitors.add(new Competitor("a", 2000, "club", eventTypes.get(2), null));
+        competitors.add(new Competitor("b", 2000, "club", eventTypes.get(2), null));
+        competitors.add(new Competitor("a", 2000, "club", eventTypes.get(1), null));
+        competitors.add(new Competitor("a1", 2000, "club", eventTypes.get(1), null));
+        competitors.add(new Competitor("a", 2000, "club", eventTypes.get(0), null));
+        competitors.add(new Competitor("c", 2000, "club", eventTypes.get(2), null));
 
-      //  competitors.add(new Competitor("Competitor121",2000,"club",eventTypes.get(0),null));
-
+        competitors.add(new Competitor("a", 2001, "club", eventTypes.get(2), null));
+        competitors.add(new Competitor("a", 2002, "club", eventTypes.get(3), null));
+        competitors.add(new Competitor("a", 2003, "club", eventTypes.get(2), null));
+        competitors.add(new Competitor("a", 2004, "club", eventTypes.get(4), null));
+        competitors.add(new Competitor("a", 2005, "club", eventTypes.get(4), null));
+        competitors.add(new Competitor("a", 2006, "club", eventTypes.get(4), null));
 
 
     }
 
     @Test
-    void MiAssignerTest(){
+    void MiAssignerTest() {
         //Given
 
-        Competition competition =new Competition();
-        competition.setNumberOfLanes(1);
-        competition.setTimeOfBeginning(LocalDateTime.of(2022,8,4,8,0));
+        Competition competition = new Competition();
+        competition.setNumberOfLanes(4);
+        competition.setTimeOfBeginning(LocalDateTime.of(2022, 8, 4, 8, 0));
         competition.setDelayBetweenRelays(Duration.ofMinutes(10));
         competitors.forEach(competition::addCompetitor);
         System.out.println(competition);
@@ -53,7 +60,6 @@ public class MiAssignerTest {
         //When
         assigner.creatStartList();
         //Then
-
 
 
     }

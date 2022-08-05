@@ -4,11 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="675.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.AddCompetitorViewController">
+<AnchorPane prefHeight="675.0" prefWidth="1018.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.AddCompetitorViewController">
    <children>
       <VBox layoutX="-1.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="99.0" prefWidth="786.0">
+            <HBox alignment="CENTER" prefHeight="99.0" prefWidth="1018.0">
                <children>
                   <Label text="Competition name: " />
                   <Label fx:id="competitionNameLabel" text="Label" />
@@ -33,14 +33,15 @@
                </children></HBox>
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="576.0" prefWidth="875.0">
                <children>
-                  <TableView fx:id="table" prefHeight="576.0" prefWidth="492.0">
+                  <TableView fx:id="table" prefHeight="576.0" prefWidth="617.0">
                      <columns>
                         <TableColumn fx:id="nameTableColum" prefWidth="156.0" text="Name" />
                         <TableColumn fx:id="clubTableColum" prefWidth="140.0" text="Club" />
                         <TableColumn fx:id="birthYearTableColum" minWidth="0.0" prefWidth="72.0" text="Birth Year" />
-                        <TableColumn fx:id="EventTypeTableColum" prefWidth="123.0" text="Event Type" />
+                        <TableColumn fx:id="eventTypeTableColum" prefWidth="123.0" text="Event Type" />
+                        <TableColumn fx:id="timeConstrainTableColum" prefWidth="123.0" text="Desired Time" />
                      </columns></TableView>
-                  <HBox prefHeight="576.0" prefWidth="381.0">
+                  <HBox prefHeight="576.0" prefWidth="383.0">
                      <children>
                         <VBox prefHeight="576.0" prefWidth="197.0">
                            <children>
@@ -62,12 +63,17 @@
                                     <Insets top="40.0" />
                                  </padding>
                               </Label>
+                              <Label layoutX="10.0" layoutY="181.0" prefHeight="28.0" prefWidth="239.0" text="Desired time:">
+                                 <padding>
+                                    <Insets top="40.0" />
+                                 </padding>
+                              </Label>
                               <Label layoutX="10.0" layoutY="66.0" prefHeight="28.0" prefWidth="239.0" text="Event Type:">
                                  <padding>
                                     <Insets top="40.0" />
                                  </padding>
                               </Label>
-                              <HBox alignment="BOTTOM_LEFT" prefHeight="348.0" prefWidth="161.0">
+                              <HBox alignment="BOTTOM_LEFT" prefHeight="348.0" prefWidth="110.0">
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#Back" prefHeight="60.0" prefWidth="80.0" text="Back" />
                                  </children>
@@ -79,9 +85,20 @@
                               <Label fx:id="nameExceptionLabel" prefHeight="30.0" text="Label" />
                               <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="218.0" />
                               <Label fx:id="clubExceptionLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
-                              <TextField fx:id="clubTextField" />
+                              <TextField fx:id="clubTextField" prefHeight="30.0" />
                               <Label fx:id="birthDayExceptionLabel" layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
-                              <TextField fx:id="birthYearTextField" />
+                              <TextField fx:id="birthYearTextField" prefHeight="30.0" />
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="272.0">
+                                 <children>
+                                    <RadioButton fx:id="radioAny" mnemonicParsing="false" prefWidth="70.0" selected="true" text="any">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="timeConstrain" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="radioEarly" mnemonicParsing="false" prefWidth="70.0" text="early" toggleGroup="$timeConstrain" />
+                                    <RadioButton fx:id="radioMiddle" mnemonicParsing="false" prefWidth="70.0" text="middle" toggleGroup="$timeConstrain" />
+                                    <RadioButton fx:id="radioLate" mnemonicParsing="false" prefWidth="70.0" text="late" toggleGroup="$timeConstrain" />
+                                 </children></HBox>
                               <Label fx:id="eventExceptionLabel" prefHeight="30.0" text="Label" />
                               <ComboBox fx:id="eventTypeComboBox" prefHeight="25.0" prefWidth="343.0" />
                               <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="218.0">
@@ -104,7 +121,7 @@
                                     </Button>
                                  </children>
                               </HBox>
-                              <HBox alignment="BOTTOM_RIGHT" prefHeight="230.0" prefWidth="272.0">
+                              <HBox alignment="BOTTOM_RIGHT" prefHeight="159.0" prefWidth="272.0">
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#GenerateNewScheduledButton" prefHeight="60.0" prefWidth="80.0" text="Generate Scheduler" textAlignment="CENTER" wrapText="true" />
                                     <Button layoutX="202.0" layoutY="180.0" mnemonicParsing="false" onAction="#NextButten" prefHeight="60.0" prefWidth="80.0" text="Next" />

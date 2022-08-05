@@ -1,4 +1,4 @@
-package hu.unideb.inf.szakdolgozat.model.assigner;
+package hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner;
 
 import hu.unideb.inf.szakdolgozat.model.dto.*;
 
@@ -8,21 +8,31 @@ import java.util.*;
 public class MiAssigner {
     public MiAssigner(Competition competition) {
         this.competition = competition;
+        this.eventTypes = competition.getCompetitors()
+                .stream()
+                .map(Competitor::getEventType)
+                .distinct()
+                .sorted(Comparator.comparingInt(EventType::getEventGroup))
+                .toList();
     }
 
-    private List<List<CompetitionEvent>> choseAbelGroups = new LinkedList<>();
+    private List<EventType> eventTypes;
+    private final List<List<CompetitionEvent>> choseAbelGroups = new LinkedList<>();
+    private ArrayList<ArrayList<Integer>> conflictMap;
 
-    private List<List<EventType>> ScheduleByEvent;
 
-    private EventNode root = new EventNode(null, null, 0, 0, 0, 0, null, null);
-    private LinkedList<EventNode> perem = new LinkedList<>();
-    private LinkedList<EventNode> celAllapot = new LinkedList<>();
+    private final EventNode root = new EventNode(null, null, 0, 0, 0, 0, null, null);
+    private final LinkedList<EventNode> perem = new LinkedList<>();
+    private final LinkedList<EventNode> celAllapot = new LinkedList<>();
     private int numberOfTheLanes;
-    private Competition competition;
+    private final Competition competition;
+
 
     public Schedule creatStartList() {
         numberOfTheLanes = competition.getNumberOfLanes();
-        creatChoseAbleGroups(competition);
+        creatChoseAbleGroups();
+        creatConflictMap();
+
         for (int i = 0; i < choseAbelGroups.get(0).size(); i++) {
             EventType eventType = choseAbelGroups.get(0).get(i).eventType;
             int numberOfTheCompetitors = choseAbelGroups.get(0).get(i).numberOfCompetitors.intValue();
@@ -66,15 +76,81 @@ public class MiAssigner {
             for (int i = 0; i < actual.numberOfRelay; i++) {
                 System.out.print("                          ");
             }
-            System.out.println(actual+" "+ actual.startTime+" "+actual.endTime);
+            System.out.println(actual + " " + actual.startTime + " " + actual.endTime);
 
         }
         while (!actual.childrenNodes.isEmpty());
 
 
-        celAllapot.forEach(x -> System.out.println(x.endTime));
+        celAllapot.forEach(x -> System.out.println(x.endTime+" "+"r:" + x.numberOfRelay));
 
         return null;
+    }
+
+    private void creatChoseAbleGroups() {
+        int actualGroupNumber = eventTypes.get(0).getEventGroup();
+        choseAbelGroups.add(new LinkedList<>());
+        var actualGroup = choseAbelGroups.get(0);
+        for (int i = 0; i < eventTypes.size(); i++) {
+            if (actualGroupNumber != eventTypes.get(i).getEventGroup()) {
+                actualGroupNumber = eventTypes.get(i).getEventGroup();
+                choseAbelGroups.add(new LinkedList<>());
+                actualGroup = choseAbelGroups.get(choseAbelGroups.size() - 1);
+            }
+            int finalI = i;
+            Long numberOfCompetitors = competition.getCompetitors()
+                    .stream()
+                    .filter(x -> x.getEventType() == eventTypes.get(finalI))
+                    .count();
+            CompetitionEvent competitionEvent = new CompetitionEvent(eventTypes.get(i), numberOfCompetitors, numberOfCompetitors);
+            actualGroup.add(competitionEvent);
+
+        }
+    }
+
+    private void creatConflictMap() {
+
+        conflictMap = new ArrayList<>(eventTypes.size());
+        for (int i = 0; i < eventTypes.size(); i++) {
+            conflictMap.add(new ArrayList<>(eventTypes.size()));
+            for (int j = 0; j < eventTypes.size(); j++) {
+                conflictMap.get(i).add(0);
+            }
+
+        }
+
+
+        for (int i = 0; i < eventTypes.size(); i++) {
+            for (int j = 0; j < eventTypes.size(); j++) {
+
+                long conflict = 0;
+                if (i != j) {
+                    int finalI = i;
+                    var eventType1 = competition.getCompetitors()
+                            .stream()
+                            .filter(x -> x.getEventType() == eventTypes.get(finalI))
+                            .toList();
+                    int finalJ = j;
+                    var eventType2 = competition.getCompetitors()
+                            .stream()
+                            .filter(x -> x.getEventType() == eventTypes.get(finalJ))
+                            .toList();
+
+                    conflict = eventType1
+                            .stream()
+                            .filter(x -> eventType2
+                                    .stream()
+                                    .anyMatch(y -> y.sameCompetitor(x))
+                            )
+                            .count();
+                }
+                conflictMap.get(i).set(j, (int) conflict);
+            }
+
+        }
+        conflictMap.stream()
+                .forEach(System.out::println);
+
     }
 
     private void creatTree() {
@@ -129,7 +205,8 @@ public class MiAssigner {
             for (CompetitionEvent event :
                     choseAbelGroups.get(i)) {
                 if (event.eventType.isIsPistolEvent() == nextEventIsPistol && !scheduledEvents.contains(event.eventType)) {
-
+                    
+                    
                     int actualFreeLanes = freeLanes - event.numberOfCompetitors.intValue();
                     int competitors;
                     if (actualFreeLanes < 0) {
@@ -137,8 +214,53 @@ public class MiAssigner {
                     } else {
                         competitors = freeLanes - actualFreeLanes;
                     }
+                    int numberOfNotScheduledCompetitors = event.numberOfNotScheduledCompetitors.intValue() - freeLanes;
+                    
+                    var currentEventNumber = eventTypes.indexOf(event.eventType);
+                    var parentNode = eventNode;
+                    var eventsInTheRelay = new LinkedList<Integer>();
+                    while(parentNode.numberOfRelay == numberOfTheRelay){
+                        eventsInTheRelay.add(eventTypes.indexOf(parentNode.eventType));
+                        parentNode=parentNode.parent;
+                    }
+                    for (int j = 0; j < eventsInTheRelay.size(); j++) {
+                        var countOfTheConflicts = conflictMap.get(currentEventNumber).get(eventsInTheRelay.get(j));
+                        if(0 < countOfTheConflicts){
+                            if(nextEventIsPistol != eventType.isIsPistolEvent()) {
+                                numberOfTheRelay++;
+                                freeLanes = competition.getNumberOfLanes();
+                                actualFreeLanes = freeLanes - event.numberOfCompetitors.intValue();
+                                numberOfNotScheduledCompetitors = event.numberOfNotScheduledCompetitors.intValue() - freeLanes;
+                                if (actualFreeLanes < 0) {
+                                    competitors = freeLanes;
+                                } else {
+                                    competitors = freeLanes - actualFreeLanes;
+                                }
+                            }else {
+                                if (numberOfNotScheduledCompetitors < countOfTheConflicts) {
+
+                                    int shootersInThePreviousRelay = 0;
+                                    if (parentNode.eventType != null && parentNode.eventType.equals(eventTypes.get(eventsInTheRelay.get(j)))) {
+                                        shootersInThePreviousRelay = parentNode.numberOfScheduledCompetitors;
+                                    }
+                                    if (shootersInThePreviousRelay < countOfTheConflicts) {
+                                        numberOfTheRelay++;
+                                        freeLanes = competition.getNumberOfLanes();
+                                        actualFreeLanes = freeLanes - event.numberOfCompetitors.intValue();
+                                        numberOfNotScheduledCompetitors = event.numberOfNotScheduledCompetitors.intValue() - freeLanes;
+                                        if (actualFreeLanes < 0) {
+                                            competitors = freeLanes;
+                                        } else {
+                                            competitors = freeLanes - actualFreeLanes;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }
                     perem.addLast(eventNode.add(event.eventType, numberOfTheRelay, actualFreeLanes,
-                            event.numberOfNotScheduledCompetitors.intValue() - freeLanes, competitors));
+                            numberOfNotScheduledCompetitors, competitors));
                     added = true;
                 }
             }
@@ -146,7 +268,7 @@ public class MiAssigner {
                 break;
             }
         }
-        if(!added){
+        if (!added) {
             celAllapot.add(eventNode);
         }
     }
@@ -193,63 +315,6 @@ public class MiAssigner {
         return -1;
     }
 
-    private void creatChoseAbleGroups(Competition competition) {
-        List<EventType> eventTypes = competition.getCompetitors()
-                .stream()
-                .map(Competitor::getEventType)
-                .distinct()
-                .sorted((x, y) -> Integer.compare(x.getEventGroup(), y.getEventGroup()))
-                .toList();
-
-        int actualGroupNumber = eventTypes.get(0).getEventGroup();
-        choseAbelGroups.add(new LinkedList<>());
-        var actualGroup = choseAbelGroups.get(0);
-        for (int i = 0; i < eventTypes.size(); i++) {
-            if (actualGroupNumber != eventTypes.get(i).getEventGroup()) {
-                actualGroupNumber = eventTypes.get(i).getEventGroup();
-                choseAbelGroups.add(new LinkedList<>());
-                actualGroup = choseAbelGroups.get(choseAbelGroups.size() - 1);
-            }
-            int finalI = i;
-            Long numberOfCompetitors = competition.getCompetitors()
-                    .stream()
-                    .filter(x -> x.getEventType() == eventTypes.get(finalI))
-                    .count();
-            CompetitionEvent competitionEvent = new CompetitionEvent(eventTypes.get(i), numberOfCompetitors, numberOfCompetitors);
-            actualGroup.add(competitionEvent);
-
-        }
-    }
-
-
-    private class CompetitionEvent {
-        EventType eventType;
-        Long numberOfNotScheduledCompetitors;
-        Long numberOfCompetitors;
-
-
-        public CompetitionEvent(EventType eventType, Long numberOfNotScheduledCompetitors, Long numberOfCompetitors) {
-            this.eventType = eventType;
-            this.numberOfNotScheduledCompetitors = numberOfNotScheduledCompetitors;
-            this.numberOfCompetitors = numberOfCompetitors;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            CompetitionEvent that = (CompetitionEvent) o;
-
-            return eventType.equals(that.eventType);
-        }
-
-        @Override
-        public int hashCode() {
-            return eventType.hashCode();
-        }
-    }
-
 
     private class EventNode {
         EventNode parent;
@@ -263,6 +328,8 @@ public class MiAssigner {
         int numberOfNotScheduledCompetitors;
 
         int numberOfScheduledCompetitors;
+
+        int conflict = 0;
 
         private LocalTime startTime;
         private LocalTime endTime;
@@ -320,8 +387,8 @@ public class MiAssigner {
                 } else {
                     this.endTime = parent.endTime;
                 }
-            }else {
-                this.startTime=parent.endTime.plus(competition.getDelayBetweenRelays());
+            } else {
+                this.startTime = parent.endTime.plus(competition.getDelayBetweenRelays());
                 this.endTime = this.startTime.plus(eventType.getDuration());
             }
         }

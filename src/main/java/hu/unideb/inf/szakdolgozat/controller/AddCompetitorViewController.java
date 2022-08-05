@@ -1,10 +1,10 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
-import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner;
-import hu.unideb.inf.szakdolgozat.model.assigner.SimpleAssigner;
+import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner.MiAssigner;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
+import hu.unideb.inf.szakdolgozat.model.dto.TimeConstrain;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -55,9 +55,23 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public TableColumn<Competitor, Integer> birthYearTableColum;
     @FXML
-    public TableColumn<Competitor, String> EventTypeTableColum;
+    public TableColumn<Competitor, String> eventTypeTableColum;
+    @FXML
+    public TableColumn<Competitor, String> timeConstrainTableColum;
+
     @FXML
     public TableView<Competitor> table;
+
+    @FXML
+    public ToggleGroup timeConstrain;
+    @FXML
+    public RadioButton radioEarly;
+    @FXML
+    public RadioButton radioMiddle;
+    @FXML
+    public RadioButton radioLate;
+    @FXML
+    public RadioButton radioAny;
 
     @Override
     public void init(Competition competition) {
@@ -65,14 +79,18 @@ public class AddCompetitorViewController extends AbstractController {
         initLabels();
         initTable();
         initEventComboBox();
+        initRadioButton();
     }
+
+
 
     private void initTable() {
 
         nameTableColum.setCellValueFactory(new PropertyValueFactory<>("name"));
         clubTableColum.setCellValueFactory(new PropertyValueFactory<>("club"));
         birthYearTableColum.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
-        EventTypeTableColum.setCellValueFactory(new PropertyValueFactory<>("eventTypeName"));
+        eventTypeTableColum.setCellValueFactory(new PropertyValueFactory<>("eventTypeName"));
+        timeConstrainTableColum.setCellValueFactory(new PropertyValueFactory<>("constrain"));
         ObservableList<Competitor> observableList = FXCollections.observableList(getCompetition().getCompetitors());
         table.setItems(observableList);
 
@@ -92,6 +110,12 @@ public class AddCompetitorViewController extends AbstractController {
         ObservableList<EventType> eventType = FXCollections.observableList(getCompetition().getEventTypes());
         eventTypeComboBox.setItems(eventType);
     }
+    private void initRadioButton() {
+        radioAny.setUserData(TimeConstrain.Any);
+        radioEarly.setUserData(TimeConstrain.Early);
+        radioMiddle.setUserData(TimeConstrain.Middle);
+        radioLate.setUserData(TimeConstrain.Late);
+    }
 
     private void resetExceptionLabels() {
         nameExceptionLabel.setText("");
@@ -109,7 +133,7 @@ public class AddCompetitorViewController extends AbstractController {
                     Integer.parseInt(birthYearTextField.getText()),
                     clubTextField.getText(),
                     eventTypeComboBox.getValue(),
-                    null
+                    (TimeConstrain) timeConstrain.getSelectedToggle().getUserData()
             );
 
             if (!getCompetition().addCompetitor(competitor)) {
