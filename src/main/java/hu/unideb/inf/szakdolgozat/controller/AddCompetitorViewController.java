@@ -133,8 +133,9 @@ public class AddCompetitorViewController extends AbstractController {
                     Integer.parseInt(birthYearTextField.getText()),
                     clubTextField.getText(),
                     eventTypeComboBox.getValue(),
-                    (TimeConstrain) timeConstrain.getSelectedToggle().getUserData()
-            );
+                    false,
+                    null
+                    );
 
             if (!getCompetition().addCompetitor(competitor)) {
                 addExceptionLabel.setText("Competitor already in the list");

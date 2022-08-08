@@ -17,7 +17,9 @@ public class Competitor {
     private String club;
     private EventType eventType;
     @EqualsAndHashCode.Exclude
-    private TimeConstrain constrain;
+    private boolean constrained;
+    @EqualsAndHashCode.Exclude
+    private Constraint constrain;
 
 
     public String  getEventTypeName(){
