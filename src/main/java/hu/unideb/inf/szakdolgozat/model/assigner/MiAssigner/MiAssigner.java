@@ -10,7 +10,7 @@ import java.util.*;
 public class MiAssigner {
     private static final Double TIME_MULTIPLIER = 1.0;
     private static final Double REQUEST_MULTIPLIER = -1.0;
-    private static final Double SHATTERED_EVENTS_MULTIPLIER = 500.0;
+    private static final Double SHATTERED_EVENTS_MULTIPLIER = 1.0;
 
     public MiAssigner(Competition competition) {
         this.competition = competition;
@@ -77,11 +77,11 @@ public class MiAssigner {
         }
 
         EventType brake = new EventType("Brake", Duration.ZERO, Duration.ZERO,
-                competition.getDelayBetweenRelays(), 0, true);
+                competition.getDelayBetweenRelays().multipliedBy(-1), 0, true);
         perem.add(root.add(brake, 0, 0, 0, 0,
                 competition.getTimeOfBeginning().toLocalTime(), competition.getTimeOfBeginning().plus(brake.getDuration()).toLocalTime()));
         brake = new EventType("Brake", Duration.ZERO, Duration.ZERO,
-                competition.getDelayBetweenRelays(), 0, false);
+                competition.getDelayBetweenRelays().multipliedBy(-1), 0, false);
         perem.add(root.add(brake, 0, 0, 0, 0,
                 competition.getTimeOfBeginning().toLocalTime(), competition.getTimeOfBeginning().plus(brake.getDuration()).toLocalTime()));
         creatTree();
@@ -321,7 +321,7 @@ int stop =0;
                 }
 
                 perem.addLast(eventNode.add(new EventType("Brake", Duration.ZERO, Duration.ZERO,
-                                competition.getDelayBetweenRelays(), eventType.getEventGroup(), eventType.isIsPistolEvent()),
+                                competition.getDelayBetweenRelays().multipliedBy(-1), eventType.getEventGroup(), eventType.isIsPistolEvent()),
                         currentNumberOfRelay, 0,
                         0, 0));
                 break;

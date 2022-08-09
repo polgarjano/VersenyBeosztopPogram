@@ -32,17 +32,18 @@ public class MiAssignerTest {
 
         competitors.add(new Competitor("aaa", 2000, "club", eventTypes.get(2),false, null));
         competitors.add(new Competitor("ba", 2000, "club", eventTypes.get(2),false, null));
-        competitors.add(new Competitor("ad", 2000, "club", eventTypes.get(2),false, null));
+        competitors.add(new Competitor("ad", 2000, "club", eventTypes.get(3),false, null));
         competitors.add(new Competitor("a1a", 2000, "club", eventTypes.get(1),false, null));
         competitors.add(new Competitor("a", 2000, "club", eventTypes.get(1),false, null));
-   //     competitors.add(new Competitor("c", 2000, "club", eventTypes.get(1),false, null));
+        competitors.add(new Competitor("c", 2000, "club", eventTypes.get(1),false, null));
 
-     //   competitors.add(new Competitor("a", 2001, "club", eventTypes.get(2),false, null));
-     //   competitors.add(new Competitor("a", 2002, "club", eventTypes.get(3),false, null));
-     //   competitors.add(new Competitor("a", 2003, "club", eventTypes.get(2),false, null));
-     //   competitors.add(new Competitor("a", 2004, "club", eventTypes.get(4),false, null));
-     //   competitors.add(new Competitor("a", 2005, "club", eventTypes.get(4),false, null));
-      //  competitors.add(new Competitor("a", 2006, "club", eventTypes.get(4),false, null));
+        competitors.add(new Competitor("a", 2001, "club", eventTypes.get(2),false, null));
+        competitors.add(new Competitor("a", 2002, "club", eventTypes.get(3),false, null));
+        competitors.add(new Competitor("a", 2003, "club", eventTypes.get(2),false, null));
+        competitors.add(new Competitor("a", 2004, "club", eventTypes.get(4),false, null));
+        competitors.add(new Competitor("a", 2005, "club", eventTypes.get(4),false, null));
+
+        competitors.add(new Competitor("a", 2006, "club", eventTypes.get(4),false, null));
 
 
     }
