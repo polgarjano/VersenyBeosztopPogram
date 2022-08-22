@@ -28,7 +28,7 @@ public class MiAssignerTest {
         eventTypes.add(new EventType("b211", duration2, duration2, duration2, 2, false));
 
         competitors.add(new Competitor("ba", 2000, "club", eventTypes.get(2), true,
-                new Constraint(LocalDateTime.of(2022, 8, 4, 8, 29), LocalDateTime.of(2022, 8, 4, 9, 11))));
+                new Constraint(LocalDateTime.of(2022, 8, 4, 11, 00), LocalDateTime.of(2022, 8, 4, 12, 00))));
         competitors.add(new Competitor("aaa", 2000, "club", eventTypes.get(2), false, null));
         competitors.add(new Competitor("ad", 2000, "club", eventTypes.get(3), false, null));
         competitors.add(new Competitor("a1a", 2000, "club", eventTypes.get(1), false, null));
@@ -38,8 +38,10 @@ public class MiAssignerTest {
         competitors.add(new Competitor("a", 2001, "club", eventTypes.get(2), false, null));
         competitors.add(new Competitor("a", 2002, "club", eventTypes.get(3), false, null));
         competitors.add(new Competitor("a", 2003, "club", eventTypes.get(2), false, null));
-        competitors.add(new Competitor("a", 2004, "club", eventTypes.get(4), false, null));
-        competitors.add(new Competitor("a", 2005, "club", eventTypes.get(4), false, null));
+        competitors.add(new Competitor("a", 2004, "club", eventTypes.get(4), true,
+                new Constraint(LocalDateTime.of(2022, 8, 4, 10, 00), LocalDateTime.of(2022, 8, 4, 11, 00))));
+        competitors.add(new Competitor("a", 2005, "club", eventTypes.get(4), true,
+                new Constraint(LocalDateTime.of(2022, 8, 4, 10, 00), LocalDateTime.of(2022, 8, 4, 11, 00))));
 
         competitors.add(new Competitor("a", 2006, "club", eventTypes.get(4), false, null));
 
@@ -51,7 +53,7 @@ public class MiAssignerTest {
         //Given
 
         Competition competition = new Competition();
-        competition.setNumberOfLanes(2);
+        competition.setNumberOfLanes(4);
         competition.setTimeOfBeginning(LocalDateTime.of(2022, 8, 4, 8, 0));
         competition.setDelayBetweenRelays(Duration.ofMinutes(10));
         competitors.forEach(competition::addCompetitor);
