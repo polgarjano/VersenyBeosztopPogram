@@ -9,8 +9,8 @@ import java.util.*;
 
 public class MiAssigner {
     private static final Double TIME_MULTIPLIER = 1.0;
-    private static final Double REQUEST_MULTIPLIER = -1.0;
-    private static final Double SHATTERED_EVENTS_MULTIPLIER = 1.0;
+    private static final Double REQUEST_MULTIPLIER = 100.0;
+    private static final Double SHATTERED_EVENTS_MULTIPLIER = 100.0;
 
     public MiAssigner(Competition competition) {
         this.competition = competition;
@@ -77,11 +77,11 @@ public class MiAssigner {
         }
 
         EventType brake = new EventType("Brake", Duration.ZERO, Duration.ZERO,
-                competition.getDelayBetweenRelays().multipliedBy(-1), 0, true);
+                competition.getDelayBetweenRelays().multipliedBy(0), 0, true);
         perem.add(root.add(brake, 0, 0, 0, 0,
                 competition.getTimeOfBeginning().toLocalTime(), competition.getTimeOfBeginning().plus(brake.getDuration()).toLocalTime()));
         brake = new EventType("Brake", Duration.ZERO, Duration.ZERO,
-                competition.getDelayBetweenRelays().multipliedBy(-1), 0, false);
+                competition.getDelayBetweenRelays().multipliedBy(0), 0, false);
         perem.add(root.add(brake, 0, 0, 0, 0,
                 competition.getTimeOfBeginning().toLocalTime(), competition.getTimeOfBeginning().plus(brake.getDuration()).toLocalTime()));
         creatTree();
@@ -100,7 +100,7 @@ public class MiAssigner {
 
                 System.out.print("                    ");
             }
-            System.out.println(eventNode + " start:" + eventNode.startTime + " end:" + eventNode.endTime);
+            System.out.println(eventNode);
         }
 
         celAllapot.forEach(x -> System.out.println(x.endTime + " j: " + x.josagErtek + " " + "r:" + x.numberOfRelay));
@@ -175,7 +175,7 @@ public class MiAssigner {
     }
 
     private void creatTree() {
-int stop =0;
+        int stop = 0;
         while (celAllapot.size() == 0) {
 
             perem
@@ -184,7 +184,7 @@ int stop =0;
                     .forEach(EventNode::CalculateJosagErtek);
 
             System.out.println("---------------------");
-            System.out.println(perem);
+            System.out.println(perem.stream().sorted(Comparator.comparingDouble(EventNode::getJosagErtek)).toList());
             System.out.println("---------------------");
 
 
@@ -215,10 +215,9 @@ int stop =0;
 
             }
 
-            if(stop==10){
+            if (stop == 10) {
                 break;
             }
-
 
 
         }
@@ -321,7 +320,7 @@ int stop =0;
                 }
 
                 perem.addLast(eventNode.add(new EventType("Brake", Duration.ZERO, Duration.ZERO,
-                                competition.getDelayBetweenRelays().multipliedBy(-1), eventType.getEventGroup(), eventType.isIsPistolEvent()),
+                                competition.getDelayBetweenRelays().multipliedBy(0), eventType.getEventGroup(), eventType.isIsPistolEvent()),
                         currentNumberOfRelay, 0,
                         0, 0));
                 break;
@@ -439,8 +438,8 @@ int stop =0;
                     .toList();
             for (Competitor competitor :
                     competitors) {
-                if (startTime.isAfter(competitor.getConstrain().getAvailableFromThatTime().toLocalTime()) &&
-                        startTime.isBefore(competitor.getConstrain().getAvailableUntilThisTime().toLocalTime())) {
+                if (!startTime.isAfter(competitor.getConstrain().getAvailableFromThatTime().toLocalTime()) ||
+                        !startTime.isBefore(competitor.getConstrain().getAvailableUntilThisTime().toLocalTime())) {
                     akku++;
                 }
             }
@@ -450,7 +449,7 @@ int stop =0;
 
 
         public String toString() {
-            return eventType.toString() + " j: " + getJosagErtek() + " r:" + numberOfRelay + " S:" + numberOfScheduledCompetitors;
+            return startTime+" "+endTime+" "+eventType.toString() + " j: " + getJosagErtek() + " r:" + numberOfRelay + " S:" + numberOfScheduledCompetitors;
         }
 
         public EventNode getRoot() {
