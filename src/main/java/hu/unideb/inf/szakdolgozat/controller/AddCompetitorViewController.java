@@ -3,8 +3,8 @@ package hu.unideb.inf.szakdolgozat.controller;
 import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner.MiAssigner;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
+import hu.unideb.inf.szakdolgozat.model.dto.Constraint;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
-import hu.unideb.inf.szakdolgozat.model.dto.TimeConstrain;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AddCompetitorViewController extends AbstractController {
@@ -62,16 +64,25 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public TableView<Competitor> table;
 
+
     @FXML
-    public ToggleGroup timeConstrain;
+    public Label fromTimeExceptionLabel;
     @FXML
-    public RadioButton radioEarly;
+    public DatePicker fromTimeDate;
     @FXML
-    public RadioButton radioMiddle;
+    public TextField fromTimeHour;
     @FXML
-    public RadioButton radioLate;
+    public TextField fromTimeMinute;
     @FXML
-    public RadioButton radioAny;
+    public Label untilTimeExceptionLabel;
+    @FXML
+    public DatePicker untilTimeDate;
+    @FXML
+    public TextField untilTimeHour;
+    @FXML
+    public TextField untilTimeMinute;
+    @FXML
+    public CheckBox IsConstrained;
 
     @Override
     public void init(Competition competition) {
@@ -79,9 +90,8 @@ public class AddCompetitorViewController extends AbstractController {
         initLabels();
         initTable();
         initEventComboBox();
-        initRadioButton();
+        initTimeConstrains();
     }
-
 
 
     private void initTable() {
@@ -90,7 +100,7 @@ public class AddCompetitorViewController extends AbstractController {
         clubTableColum.setCellValueFactory(new PropertyValueFactory<>("club"));
         birthYearTableColum.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
         eventTypeTableColum.setCellValueFactory(new PropertyValueFactory<>("eventTypeName"));
-        timeConstrainTableColum.setCellValueFactory(new PropertyValueFactory<>("constrain"));
+        timeConstrainTableColum.setCellValueFactory(new PropertyValueFactory<>("constrainInString"));
         ObservableList<Competitor> observableList = FXCollections.observableList(getCompetition().getCompetitors());
         table.setItems(observableList);
 
@@ -110,11 +120,15 @@ public class AddCompetitorViewController extends AbstractController {
         ObservableList<EventType> eventType = FXCollections.observableList(getCompetition().getEventTypes());
         eventTypeComboBox.setItems(eventType);
     }
-    private void initRadioButton() {
-        radioAny.setUserData(TimeConstrain.Any);
-        radioEarly.setUserData(TimeConstrain.Early);
-        radioMiddle.setUserData(TimeConstrain.Middle);
-        radioLate.setUserData(TimeConstrain.Late);
+
+    private void initTimeConstrains() {
+        fromTimeDate.setValue(getCompetition().getTimeOfBeginning().toLocalDate());
+        fromTimeHour.setText(Integer.toString(getCompetition().getTimeOfBeginning().getHour()));
+        fromTimeMinute.setText(Integer.toString(getCompetition().getTimeOfBeginning().getMinute()));
+
+        untilTimeDate.setValue(getCompetition().getTimeOfBeginning().toLocalDate());
+        untilTimeHour.setText(Integer.toString(getCompetition().getTimeOfBeginning().getHour()));
+        untilTimeMinute.setText(Integer.toString(getCompetition().getTimeOfBeginning().getMinute()));
     }
 
     private void resetExceptionLabels() {
@@ -133,12 +147,17 @@ public class AddCompetitorViewController extends AbstractController {
                     Integer.parseInt(birthYearTextField.getText()),
                     clubTextField.getText(),
                     eventTypeComboBox.getValue(),
-                    false,
-                    null
-                    );
+                    IsConstrained.isSelected(),
+                    new Constraint(LocalDateTime.of(fromTimeDate.getValue(),
+                                    LocalTime.of(Integer.parseInt(fromTimeHour.getText()), Integer.parseInt(fromTimeMinute.getText()))),
+                            LocalDateTime.of(untilTimeDate.getValue(),
+                                    LocalTime.of(Integer.parseInt(untilTimeHour.getText()), Integer.parseInt(untilTimeMinute.getText()))))
+            );
 
             if (!getCompetition().addCompetitor(competitor)) {
                 addExceptionLabel.setText("Competitor already in the list");
+
+                LocalTime.of(Integer.parseInt(fromTimeHour.getText()), Integer.parseInt(fromTimeMinute.getText()));
             }
         }
         table.refresh();
@@ -164,11 +183,27 @@ public class AddCompetitorViewController extends AbstractController {
 
         AbstractValidator<Object> eventTypeValidator = new NotNullValidator();
 
+        AbstractValidator<Object> dateValidator = new NotNullValidator();
+
+        AbstractValidator<String> hourValidator = new StringNotEmptyValidator();
+        hourValidator.add(new StringToIntegerValidator());
+        hourValidator.add(new HourValidator());
+
+        AbstractValidator<String> minuteValidator = new StringNotEmptyValidator();
+        minuteValidator.add(new StringToIntegerValidator());
+        minuteValidator.add(new MinuteValidator());
+
 
         return (notEmptyString.execute(nameTextField.getText(), nameExceptionLabel)
                 & notEmptyString.execute(clubTextField.getText(), clubExceptionLabel)
                 & birthYearValidator.execute(birthYearTextField.getText(), birthDayExceptionLabel)
-                & eventTypeValidator.execute(eventTypeComboBox.getValue(), eventExceptionLabel));
+                & eventTypeValidator.execute(eventTypeComboBox.getValue(), eventExceptionLabel)
+                & dateValidator.execute(fromTimeDate.getValue(), fromTimeExceptionLabel)
+                & hourValidator.execute(fromTimeHour.getText(), fromTimeExceptionLabel)
+                & minuteValidator.execute(fromTimeMinute.getText(), fromTimeExceptionLabel)
+                & dateValidator.execute(untilTimeDate.getValue(), untilTimeExceptionLabel)
+                & hourValidator.execute(untilTimeHour.getText(), untilTimeExceptionLabel)
+                & minuteValidator.execute(untilTimeMinute.getText(), untilTimeExceptionLabel));
     }
 
     @FXML
@@ -182,7 +217,7 @@ public class AddCompetitorViewController extends AbstractController {
 
     @FXML
     public void GenerateNewScheduledButton(ActionEvent actionEvent) throws IOException {
-       // SimpleAssigner assigner = new SimpleAssigner();
+        // SimpleAssigner assigner = new SimpleAssigner();
         MiAssigner assigner = new MiAssigner(getCompetition());
         getCompetition().getSchedules().add(assigner.creatStartList());
         loadView("Schedule-view.fxml", actionEvent);

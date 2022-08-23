@@ -2,6 +2,7 @@ package hu.unideb.inf.szakdolgozat.model.dto;
 
 import lombok.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +42,16 @@ public class Competitor {
         if (!Objects.equals(name, that.name)) return false;
         if (!Objects.equals(birthYear, that.birthYear)) return false;
         return Objects.equals(club, that.club);
+    }
+
+    public String getConstrainInString(){
+        if(constrained){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+            return constrain.getAvailableFromThatTime().format(formatter) +" - "+ constrain.getAvailableUntilThisTime().format(formatter);
+        }else {
+
+            return "Not constrained";
+        }
     }
 
 

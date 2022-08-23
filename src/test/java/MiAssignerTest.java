@@ -21,7 +21,7 @@ public class MiAssignerTest {
         eventTypes.add(new EventType("a1", duration, duration, duration, 1, false));
         eventTypes.add(new EventType("b1", duration, duration, duration, 1, false));
         eventTypes.add(new EventType("c1", duration2, duration2, duration2, 1, true));
-        eventTypes.add(new EventType("d1", duration, duration, duration, 1, true));//
+        eventTypes.add(new EventType("d1", duration, duration, duration, 1, true));
         eventTypes.add(new EventType("a2", duration, duration, duration, 2, true));
         eventTypes.add(new EventType("b2", duration2, duration2, duration2, 2, false));
         eventTypes.add(new EventType("b21", duration, duration, duration, 2, true));
