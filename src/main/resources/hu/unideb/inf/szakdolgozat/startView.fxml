@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.StartViewController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="402.0" prefWidth="600.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="402.0" prefWidth="304.0">
+               <children>
+                  <ComboBox fx:id="competitionComboBox" prefHeight="25.0" prefWidth="299.0" />
+                  <Button mnemonicParsing="false" onAction="#loadButton" text="Load" />
+               </children></VBox>
+            <VBox alignment="CENTER" prefHeight="402.0" prefWidth="299.0">
+               <children>
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#newCompetitionButton" text="New competition" />
+               </children>
+            </VBox>
+         </children></HBox>
+   </children>
+</AnchorPane>

@@ -100,13 +100,14 @@ public class CompetitionController extends AbstractController {
 
     @Override
     public void init(Competition competition) {
-        setCompetition(competition);
-        competitionName.setText(competition.getName());
-        numberOfLanes.setText(competition.getNumberOfLanes().toString());
-        delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().toMinutes()));
-        startTimeDate.setValue(competition.getTimeOfBeginning().toLocalDate());
-        startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
-        startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));
-
+        if (getCompetition() != null) {
+            setCompetition(competition);
+            competitionName.setText(competition.getName());
+            numberOfLanes.setText(competition.getNumberOfLanes().toString());
+            delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().toMinutes()));
+            startTimeDate.setValue(competition.getTimeOfBeginning().toLocalDate());
+            startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
+            startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));
+        }
     }
 }
