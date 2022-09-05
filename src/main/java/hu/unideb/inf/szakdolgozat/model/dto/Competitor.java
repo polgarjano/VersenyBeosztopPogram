@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 @EqualsAndHashCode
-@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,8 +22,8 @@ public class Competitor {
     private Constraint constrain;
 
 
-    public String  getEventTypeName(){
-        return  eventType.getName();
+    public String getEventTypeName() {
+        return eventType.getName();
     }
 
 
@@ -44,15 +43,22 @@ public class Competitor {
         return Objects.equals(club, that.club);
     }
 
-    public String getConstrainInString(){
-        if(constrained){
+    public String getConstrainInString() {
+        if (constrained) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
-            return constrain.getAvailableFromThatTime().format(formatter) +" - "+ constrain.getAvailableUntilThisTime().format(formatter);
-        }else {
+            return constrain.getAvailableFromThatTime().format(formatter) + " - " + constrain.getAvailableUntilThisTime().format(formatter);
+        } else {
 
             return "Not constrained";
         }
     }
 
-
+    @Override
+    public String toString() {
+        return
+                name + ", " +
+                        club + ", " +
+                        birthYear + ", " +
+                        eventType;
+    }
 }

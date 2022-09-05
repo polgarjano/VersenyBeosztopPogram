@@ -1,8 +1,10 @@
 package hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner;
 
 import hu.unideb.inf.szakdolgozat.model.dto.*;
+import hu.unideb.inf.szakdolgozat.model.dto.view.RelayWhitEventType;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -10,9 +12,11 @@ import java.util.*;
 public class MiAssigner {
     private static final Double TIME_MULTIPLIER = 1.0;
     private static final Double REQUEST_MULTIPLIER = 600.0;
-    private static final Double SHATTERED_EVENTS_MULTIPLIER = 300.0;
+    private static final Double SHATTERED_EVENTS_MULTIPLIER = 1.0;
 
-    private static final Integer BREAK_TIME = 1;
+    private static final String BREAK = "break";
+
+    private static final Integer BREAK_TIME = 40;
 
     public MiAssigner(Competition competition) {
         this.competition = competition;
@@ -26,7 +30,7 @@ public class MiAssigner {
 
     }
 
-    private List<EventType> eventTypes;
+    private final List<EventType> eventTypes;
     private final List<List<CompetitionEvent>> choseAbelGroups = new LinkedList<>();
     private ArrayList<ArrayList<Integer>> conflictMap;
 
@@ -70,6 +74,7 @@ public class MiAssigner {
                     } else {
                         competitors = numberOfTheLanes - freeLanes;
                     }
+                    node.CalculateJosagErtek();
                     node = node.add(eventType, numberOfTheRelay, freeLanes, numberOfTheNotScheduledCompetitors, competitors);
                 }
                 perem.add(node);
@@ -78,14 +83,15 @@ public class MiAssigner {
 
         }
 
-        EventType brake = new EventType("Brake", Duration.ZERO, Duration.ZERO,
+        EventType brake = new EventType(BREAK, Duration.ZERO, Duration.ZERO,
                 Duration.ofMinutes(BREAK_TIME), 0, true);
         perem.add(root.add(brake, 0, 0, 0, 0,
                 competition.getTimeOfBeginning().toLocalTime(), competition.getTimeOfBeginning().plus(brake.getDuration()).toLocalTime()));
-        brake = new EventType("Brake", Duration.ZERO, Duration.ZERO,
+        brake = new EventType(BREAK, Duration.ZERO, Duration.ZERO,
                 Duration.ofMinutes(BREAK_TIME), 0, false);
         perem.add(root.add(brake, 0, 0, 0, 0,
                 competition.getTimeOfBeginning().toLocalTime(), competition.getTimeOfBeginning().plus(brake.getDuration()).toLocalTime()));
+
         creatTree();
 
         var actual = celAllapot.get(0);
@@ -107,8 +113,75 @@ public class MiAssigner {
 
         celAllapot.forEach(x -> System.out.println(x.endTime + " j: " + x.josagErtek + " " + "r:" + x.numberOfRelay));
 
-        return null;
+        return creatSchedule(megoldas);
     }
+
+    private Schedule creatSchedule(LinkedList<EventNode> megoldas) {
+        LinkedList<RelayWhitEventType> relays = new LinkedList<>();
+        int realNumberOfTheRelay = 0;
+        int numberOfTheRelay = 0;
+        RelayWhitEventType actualRelay = null;
+        for (EventNode eventNode :
+                megoldas) {
+            if (eventNode.eventType.getName() != BREAK) {
+                if (numberOfTheRelay < eventNode.numberOfRelay) {
+                    if (actualRelay != null) {
+                        relays.addLast(actualRelay);
+                    }
+                    numberOfTheRelay = eventNode.numberOfRelay;
+                    realNumberOfTheRelay++;
+                    actualRelay = new RelayWhitEventType(realNumberOfTheRelay, eventNode.startTime, eventNode.endTime, new LinkedList<>(), new HashMap<>());
+                    actualRelay.addEventType(eventNode.eventType, eventNode.numberOfScheduledCompetitors);
+                } else {
+                    actualRelay.addEventType(eventNode.eventType, eventNode.numberOfScheduledCompetitors);
+                    if (actualRelay.getEndTime().isBefore(eventNode.endTime)) {
+                        actualRelay.setEndTime(eventNode.endTime);
+                    }
+                }
+            }
+        }
+        if (actualRelay != null) {
+            relays.addLast(actualRelay);
+        }
+
+        List<Competitor> competitors = new LinkedList<>(competition.getCompetitors());
+        List<Competitor> constrainedCompetitors = competitors
+                .stream()
+                .filter(Competitor::isConstrained)
+                .toList();
+        for (Competitor competitor : constrainedCompetitors) {
+            for (int i = 0; i < relays.size(); i++) {
+                if (relays.get(i).getStartTime().isAfter(competitor.getConstrain().getAvailableFromThatTime().toLocalTime()) &&
+                        relays.get(i).getStartTime().isBefore(competitor.getConstrain().getAvailableUntilThisTime().toLocalTime())) {
+                    if (relays.get(i).getEventTypes().get(competitor.getEventType()) != null &&
+                            relays.get(i).getEventTypes().get(competitor.getEventType()) > 0)
+                    {
+                        relays.get(i).addCompetitor(competitor);
+                        competitors.remove(competitor);
+                        relays.get(i).getEventTypes().replace(competitor.getEventType(), relays.get(i).getEventTypes().get(competitor.getEventType()) - 1);
+                    }
+                }
+            }
+
+        }
+
+        for (Competitor competitor : competitors) {
+            for (RelayWhitEventType relay : relays) {
+                for (EventType eventType : relay.getEventTypes().keySet()) {
+                    if (eventType == competitor.getEventType() && relay.getEventTypes().get(eventType)>0 ){
+                        relay.addCompetitor(competitor);
+                        relay.getEventTypes().replace(eventType,relay.getEventTypes().get(eventType)-1);
+                    }
+                }
+            }
+        }
+
+
+        System.out.println(relays);
+
+        return new Schedule(relays.stream().map(x -> (Relay) x).toList());
+    }
+
 
     private void creatChoseAbleGroups() {
         int actualGroupNumber = eventTypes.get(0).getEventGroup();
@@ -171,13 +244,13 @@ public class MiAssigner {
             }
 
         }
-        conflictMap.stream()
+        conflictMap
                 .forEach(System.out::println);
 
     }
 
     private void creatTree() {
-        int stop = 0;
+
         while (celAllapot.size() == 0) {
 
             perem
@@ -185,9 +258,9 @@ public class MiAssigner {
                     .filter(x -> x.josagErtek == null)
                     .forEach(EventNode::CalculateJosagErtek);
 
-            System.out.println("---------------------");
-            System.out.println(perem.size());
-            System.out.println("---------------------");
+//            System.out.println("---------------------");
+//            System.out.println(perem.size());
+//            System.out.println("---------------------");
 
 
             EventNode eventNode = perem
@@ -216,11 +289,6 @@ public class MiAssigner {
                 newEventTypeOperator(eventNode, eventType, freeLanes, numberOfTheRelay);
 
             }
-
-            if (stop == 10) {
-                break;
-            }
-
 
         }
     }
@@ -315,13 +383,13 @@ public class MiAssigner {
             if (added) {
 
                 int currentNumberOfRelay;
-                if (actualParent.eventType != null && actualParent.eventType.getName() == "Brake") {
+                if (actualParent.eventType != null && actualParent.eventType.getName() == BREAK) {
                     currentNumberOfRelay = numberOfTheRelay;
                 } else {
                     currentNumberOfRelay = numberOfTheRelay + 1;
                 }
 
-                perem.addLast(eventNode.add(new EventType("Brake", Duration.ZERO, Duration.ZERO,
+                perem.addLast(eventNode.add(new EventType(BREAK, Duration.ZERO, Duration.ZERO,
                                 Duration.ofMinutes(BREAK_TIME), eventType.getEventGroup(), eventType.isIsPistolEvent()),
                         currentNumberOfRelay, 0,
                         0, 0));
@@ -333,7 +401,8 @@ public class MiAssigner {
         }
     }
 
-    private void SameEventTypeNewRelayOperator(EventNode eventNode, EventType eventType, int freeLanes, int numberOfTheNotScheduledCompetitors, int numberOfTheRelay) {
+    private void SameEventTypeNewRelayOperator(EventNode eventNode, EventType eventType, int freeLanes,
+                                               int numberOfTheNotScheduledCompetitors, int numberOfTheRelay) {
         int actualFreeLanes = freeLanes - numberOfTheNotScheduledCompetitors;
         numberOfTheNotScheduledCompetitors = numberOfTheNotScheduledCompetitors - freeLanes;
 
@@ -391,6 +460,10 @@ public class MiAssigner {
 
         public Double getJosagErtek() {
             return josagErtek;
+        }
+
+        public int getNumberOfRelay() {
+            return numberOfRelay;
         }
 
         Double josagErtek = null;
@@ -451,7 +524,7 @@ public class MiAssigner {
 
 
         public String toString() {
-            return startTime+" "+endTime+" "+eventType.toString() + " j: " + getJosagErtek() + " r:" + numberOfRelay + " S:" + numberOfScheduledCompetitors;
+            return startTime + " " + endTime + " " + eventType.toString() + " j: " + getJosagErtek() + " r:" + numberOfRelay + " S:" + numberOfScheduledCompetitors;
         }
 
         public EventNode getRoot() {

@@ -1,5 +1,6 @@
 package hu.unideb.inf.szakdolgozat.model.dto;
 
+import hu.unideb.inf.szakdolgozat.model.dto.view.RelayWhitEventType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
