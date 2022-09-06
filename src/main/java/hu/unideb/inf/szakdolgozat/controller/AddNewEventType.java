@@ -77,11 +77,10 @@ public class AddNewEventType extends AbstractController {
             System.out.println(eventType.isIsPistolEvent());
 
 
-                EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
-                dao.saveEventType(eventType);
+            EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
+            getCompetition().addEventType(eventType);
+            dao.saveEventType(eventType);
 
-
-            super.loadView("addCompetitorView.fxml", actionEvent);
         }
     }
 
@@ -103,10 +102,10 @@ public class AddNewEventType extends AbstractController {
     private boolean validate() {
         AbstractValidator<String> nameValidator = new StringNotEmptyValidator();
         nameValidator.add(new IsUniqueValidator<String>(
-                getCompetition().getEventTypes()
-                        .stream()
-                        .map(x -> x.getName())
-                        .collect(Collectors.toList())
+                        getCompetition().getEventTypes()
+                                .stream()
+                                .map(x -> x.getName())
+                                .collect(Collectors.toList())
                 )
         );
 

@@ -95,11 +95,12 @@ public class AddCompetitorViewController extends AbstractController {
     @Override
     public void init(Competition competition) {
         setCompetition(competition);
+        loadEventTypes();
         initLabels();
         initCompetitor();
         initEventComboBox();
         initTimeConstrains();
-        loadEventTypes();
+
     }
 
 
@@ -146,7 +147,7 @@ public class AddCompetitorViewController extends AbstractController {
     }
 
     private void loadEventTypes() {
-
+            System.out.println("loadEventType");
             EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
             getCompetition().setEventTypes(dao.getEventTypeList());
 
