@@ -166,12 +166,20 @@ public class MiAssigner {
         }
 
         for (Competitor competitor : competitors) {
+            boolean placed=false;
             for (RelayWhitEventType relay : relays) {
                 for (EventType eventType : relay.getEventTypes().keySet()) {
                     if (eventType == competitor.getEventType() && relay.getEventTypes().get(eventType)>0 ){
                         relay.addCompetitor(competitor);
                         relay.getEventTypes().replace(eventType,relay.getEventTypes().get(eventType)-1);
+                        placed=true;
                     }
+                    if(placed){
+                        break;
+                    }
+                }
+                if(placed){
+                    break;
                 }
             }
         }
