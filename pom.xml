@@ -12,6 +12,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.1</junit.version>
+        <jdbi.version>3.19.0</jdbi.version>
+        <tinylog.version>2.2.1</tinylog.version>
     </properties>
 
     <dependencies>
@@ -41,6 +43,47 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-core</artifactId>
+            <version>${jdbi.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-sqlobject</artifactId>
+            <version>${jdbi.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>tinylog-api</artifactId>
+            <version>${tinylog.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>tinylog-impl</artifactId>
+            <version>${tinylog.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>slf4j-tinylog</artifactId>
+            <version>${tinylog.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

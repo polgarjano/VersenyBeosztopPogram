@@ -1,5 +1,6 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
+import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
@@ -9,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import org.jdbi.v3.core.Handle;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -74,7 +76,10 @@ public class AddNewEventType extends AbstractController {
 
             System.out.println(eventType.isIsPistolEvent());
 
-            getCompetition().addEventType(eventType);
+
+                EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
+                dao.saveEventType(eventType);
+
 
             super.loadView("addCompetitorView.fxml", actionEvent);
         }

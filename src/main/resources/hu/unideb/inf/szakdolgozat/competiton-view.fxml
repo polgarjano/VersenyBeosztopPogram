@@ -59,6 +59,7 @@
                </children>
             </VBox>
                 <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#next" text="Next" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" onAction="#back" text="Back" GridPane.rowIndex="4" />
             </children>
         </GridPane>
     </children>

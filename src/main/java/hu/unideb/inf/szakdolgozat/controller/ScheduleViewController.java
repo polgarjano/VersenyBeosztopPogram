@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import org.jdbi.v3.core.Handle;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -42,6 +43,7 @@ public class ScheduleViewController extends AbstractController {
 
     @FXML
     public void save(ActionEvent actionEvent) {
+
     }
 
     @Override

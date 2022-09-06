@@ -1,6 +1,7 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
 import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner.MiAssigner;
+import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.Constraint;
@@ -12,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.jdbi.v3.core.Handle;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -97,7 +99,10 @@ public class AddCompetitorViewController extends AbstractController {
         initCompetitor();
         initEventComboBox();
         initTimeConstrains();
+        loadEventTypes();
     }
+
+
 
 
     private void initCompetitor() {
@@ -138,6 +143,14 @@ public class AddCompetitorViewController extends AbstractController {
         untilTimeDate.setValue(getCompetition().getTimeOfBeginning().toLocalDate());
         untilTimeHour.setText(Integer.toString(getCompetition().getTimeOfBeginning().getHour()));
         untilTimeMinute.setText(Integer.toString(getCompetition().getTimeOfBeginning().getMinute()));
+    }
+
+    private void loadEventTypes() {
+
+            EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
+            getCompetition().setEventTypes(dao.getEventTypeList());
+
+
     }
 
     private void resetExceptionLabels() {

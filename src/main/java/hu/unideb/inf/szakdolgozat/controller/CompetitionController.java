@@ -100,7 +100,7 @@ public class CompetitionController extends AbstractController {
 
     @Override
     public void init(Competition competition) {
-        if (getCompetition() != null) {
+        if (competition != null) {
             setCompetition(competition);
             competitionName.setText(competition.getName());
             numberOfLanes.setText(competition.getNumberOfLanes().toString());
@@ -109,5 +109,10 @@ public class CompetitionController extends AbstractController {
             startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
             startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));
         }
+    }
+
+    @FXML
+    public void back(ActionEvent actionEvent) throws IOException {
+        loadView("startView.fxml", actionEvent);
     }
 }
