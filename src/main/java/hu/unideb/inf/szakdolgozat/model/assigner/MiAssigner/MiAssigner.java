@@ -45,6 +45,7 @@ public class MiAssigner {
     public Schedule creatStartList() {
         numberOfTheLanes = competition.getNumberOfLanes();
         creatChoseAbleGroups();
+        System.out.println(choseAbelGroups);
         creatConflictMap();
 
         for (int i = 0; i < choseAbelGroups.get(0).size(); i++) {
