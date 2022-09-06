@@ -170,7 +170,7 @@ public class MiAssigner {
             boolean placed=false;
             for (RelayWhitEventType relay : relays) {
                 for (EventType eventType : relay.getEventTypes().keySet()) {
-                    if (eventType == competitor.getEventType() && relay.getEventTypes().get(eventType)>0 ){
+                    if (eventType.equals(competitor.getEventType()) && relay.getEventTypes().get(eventType)>0 ){
                         relay.addCompetitor(competitor);
                         relay.getEventTypes().replace(eventType,relay.getEventTypes().get(eventType)-1);
                         placed=true;
@@ -205,7 +205,7 @@ public class MiAssigner {
             int finalI = i;
             Long numberOfCompetitors = competition.getCompetitors()
                     .stream()
-                    .filter(x -> x.getEventType() == eventTypes.get(finalI))
+                    .filter(x -> x.getEventType().equals(eventTypes.get(finalI)))
                     .count();
             CompetitionEvent competitionEvent = new CompetitionEvent(eventTypes.get(i), numberOfCompetitors, numberOfCompetitors);
             actualGroup.add(competitionEvent);
