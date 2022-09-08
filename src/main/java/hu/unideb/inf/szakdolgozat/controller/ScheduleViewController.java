@@ -1,5 +1,6 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
+import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.Relay;
@@ -38,12 +39,20 @@ public class ScheduleViewController extends AbstractController {
 
     @FXML
     public void back(ActionEvent actionEvent) throws IOException {
-        super.loadView("addCompetitorView.fxml",actionEvent);
+        super.loadView("addCompetitorView.fxml", actionEvent);
     }
 
     @FXML
     public void save(ActionEvent actionEvent) {
+        getHandle().useTransaction(h -> {
+            CompetitionDAO dao = h.attach(CompetitionDAO.class);
 
+            if (getCompetition().getId() == null) {
+                getCompetition().setId(dao.saveCompetition(getCompetition()));
+            } else {
+                dao.updateCompetition(getCompetition());
+            }
+        });
     }
 
     @Override
@@ -104,7 +113,7 @@ public class ScheduleViewController extends AbstractController {
         List<TreeItem<ScheduledCompetitor>> treeItems = new LinkedList<>();
 
         for (int i = 0; i < competitors.size(); i++) {
-            TreeItem<ScheduledCompetitor> relayTreeItem = new TreeItem<>(ScheduledCompetitor.getCompetitor(i,competitors.get(i)));
+            TreeItem<ScheduledCompetitor> relayTreeItem = new TreeItem<>(ScheduledCompetitor.getCompetitor(i, competitors.get(i)));
             treeItems.add(relayTreeItem);
         }
 

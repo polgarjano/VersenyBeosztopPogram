@@ -8,7 +8,6 @@ import hu.unideb.inf.szakdolgozat.model.dto.Schedule;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SimpleAssigner {
 

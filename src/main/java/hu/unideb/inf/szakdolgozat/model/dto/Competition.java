@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 @AllArgsConstructor
@@ -22,21 +21,29 @@ public class Competition {
     private Long id;
     private String name;
     private LocalDateTime timeOfBeginning;
-    private Integer NumberOfLanes;
-    private Duration DelayBetweenRelays;
+    private Integer numberOfLanes;
+    private Duration delayBetweenRelays;
     private ObservableList<Competitor> competitors = FXCollections.observableList(new ArrayList<>());
     private List<Schedule> schedules = new LinkedList<>();
+
+    @Override
+    public String toString() {
+        return id +
+                ", " + name +
+                ", " + timeOfBeginning;
+    }
+
     private List<EventType> eventTypes = new LinkedList<>();
 
-    public boolean addCompetitor(Competitor competitor){
-        if(competitors.contains(competitor)) {
+    public boolean addCompetitor(Competitor competitor) {
+        if (competitors.contains(competitor)) {
             return false;
         }
         competitors.add(competitor);
-        return  true;
+        return true;
     }
 
-    public  boolean addEventType(EventType eventType){
-        return  eventTypes.add(eventType);
+    public boolean addEventType(EventType eventType) {
+        return eventTypes.add(eventType);
     }
 }

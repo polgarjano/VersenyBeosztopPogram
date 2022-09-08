@@ -4,7 +4,6 @@ import hu.unideb.inf.szakdolgozat.model.dto.*;
 import hu.unideb.inf.szakdolgozat.model.dto.view.RelayWhitEventType;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;

@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.jdbi.v3.core.Handle;
 
 import java.io.IOException;
 import java.time.LocalDate;

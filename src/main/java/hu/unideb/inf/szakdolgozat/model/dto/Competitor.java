@@ -2,8 +2,8 @@ package hu.unideb.inf.szakdolgozat.model.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Objects;
 
 @EqualsAndHashCode
@@ -26,6 +26,35 @@ public class Competitor {
         return eventType.getName();
     }
 
+
+    void setTimeFrom(LocalDateTime from){
+        if(constrain==null){
+            constrain= new Constraint();
+        }
+        constrain.setAvailableFromThatTime(from);
+    }
+
+
+    void setTimeUntil(LocalDateTime Until){
+        if(constrain==null){
+            constrain= new Constraint();
+        }
+        constrain.setAvailableFromThatTime(Until);
+    }
+
+    LocalDateTime getTimeUntil(){
+        if(constrain==null){
+            return null;
+        }
+        return constrain.getAvailableFromThatTime();
+    }
+
+    LocalDateTime getTimeFrom(){
+        if(constrain==null){
+            return null;
+        }
+        return constrain.getAvailableUntilThisTime();
+    }
 
     protected boolean canEqual(final Object other) {
         return other instanceof Competitor;

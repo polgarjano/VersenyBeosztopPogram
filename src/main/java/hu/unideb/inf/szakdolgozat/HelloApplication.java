@@ -1,6 +1,7 @@
 package hu.unideb.inf.szakdolgozat;
 
 import hu.unideb.inf.szakdolgozat.controller.AbstractController;
+import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +23,9 @@ public class HelloApplication extends Application {
         jdbi.installPlugin(new SqlObjectPlugin());
         handle = jdbi.open();
         EventTypeDAO dao = handle.attach(EventTypeDAO.class);
+        CompetitionDAO CompetitionDao =handle.attach(CompetitionDAO.class);
         dao.createTable();
-
+        CompetitionDao.createTable();
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startView.fxml"));
 
@@ -33,6 +35,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         controller.setHandle(handle);
+        controller.init(null);
     }
 
     @Override
