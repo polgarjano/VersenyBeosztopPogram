@@ -1,7 +1,6 @@
 package hu.unideb.inf.szakdolgozat.model.dao;
 
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
-import hu.unideb.inf.szakdolgozat.model.dto.EventType;
 import org.jdbi.v3.sqlobject.SqlObject;
 import org.jdbi.v3.sqlobject.config.RegisterArgumentFactory;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;

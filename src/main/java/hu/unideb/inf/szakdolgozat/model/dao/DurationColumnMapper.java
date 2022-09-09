@@ -1,5 +1,6 @@
 package hu.unideb.inf.szakdolgozat.model.dao;
 
+
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 

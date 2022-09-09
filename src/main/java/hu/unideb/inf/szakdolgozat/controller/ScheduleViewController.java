@@ -1,6 +1,7 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.CompetitorDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.Relay;
@@ -46,12 +47,18 @@ public class ScheduleViewController extends AbstractController {
     public void save(ActionEvent actionEvent) {
         getHandle().useTransaction(h -> {
             CompetitionDAO dao = h.attach(CompetitionDAO.class);
-
+            CompetitorDAO competitorDAO = h.attach(CompetitorDAO.class);
             if (getCompetition().getId() == null) {
                 getCompetition().setId(dao.saveCompetition(getCompetition()));
             } else {
                 dao.updateCompetition(getCompetition());
             }
+
+            competitorDAO.clearCompetitors(getCompetition().getId());
+            getCompetition().getCompetitors().forEach(x -> {
+                x.setCompetitionId(getCompetition().getId());
+                competitorDAO.saveCompetitor(x);
+            });
         });
     }
 

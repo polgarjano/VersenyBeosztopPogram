@@ -11,7 +11,10 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Data
 public class Competitor {
+    private Long competitionId;
     private String name;
     private Integer birthYear;
     private String club;
@@ -21,40 +24,56 @@ public class Competitor {
     @EqualsAndHashCode.Exclude
     private Constraint constrain;
 
+    public LocalDateTime getTimeFrom() {
+        System.out.println("get time frome");
+        if(constrain==null){
+            System.out.println("Constrain is null");
+            return null;
+        }
+
+        return constrain.getAvailableFromThatTime();
+    }
+
+    public void setTimeFrom(LocalDateTime timeFrom) {
+        if(constrain==null){
+            constrain = new Constraint();
+        }
+        constrain.setAvailableFromThatTime(timeFrom);
+    }
+
+    public LocalDateTime getTimeUntil() {
+        System.out.println("get time until");
+        if(constrain==null){
+            System.out.println("Constrain is null");
+            return null;
+        }
+
+        return constrain.getAvailableUntilThisTime();
+    }
+
+    public void setTimeUntil(LocalDateTime timeUntil) {
+        if(constrain==null){
+            constrain = new Constraint();
+        }
+        constrain.setAvailableUntilThisTime(timeUntil);
+    }
+
+
+    public Competitor(String name, Integer birthYear, String club, EventType eventType, boolean constrained, Constraint constrain) {
+        this.name = name;
+        this.birthYear = birthYear;
+        this.club = club;
+        this.eventType = eventType;
+        this.constrained = constrained;
+        this.constrain = constrain;
+    }
 
     public String getEventTypeName() {
         return eventType.getName();
     }
 
 
-    void setTimeFrom(LocalDateTime from){
-        if(constrain==null){
-            constrain= new Constraint();
-        }
-        constrain.setAvailableFromThatTime(from);
-    }
 
-
-    void setTimeUntil(LocalDateTime Until){
-        if(constrain==null){
-            constrain= new Constraint();
-        }
-        constrain.setAvailableFromThatTime(Until);
-    }
-
-    LocalDateTime getTimeUntil(){
-        if(constrain==null){
-            return null;
-        }
-        return constrain.getAvailableFromThatTime();
-    }
-
-    LocalDateTime getTimeFrom(){
-        if(constrain==null){
-            return null;
-        }
-        return constrain.getAvailableUntilThisTime();
-    }
 
     protected boolean canEqual(final Object other) {
         return other instanceof Competitor;
