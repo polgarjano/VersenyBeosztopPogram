@@ -14,5 +14,6 @@ module hu.unideb.inf.szakdolgozat {
     exports hu.unideb.inf.szakdolgozat.model.dao;
     exports hu.unideb.inf.szakdolgozat.model.dto.view;
     opens hu.unideb.inf.szakdolgozat.controller to javafx.fxml;
+    opens hu.unideb.inf.szakdolgozat.model.dao to org.jdbi.v3.sqlobject;
     exports hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner;
 }

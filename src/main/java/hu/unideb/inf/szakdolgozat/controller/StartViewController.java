@@ -1,6 +1,8 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.CompetitorDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +21,14 @@ public class StartViewController extends  AbstractController {
     public void loadButton(ActionEvent actionEvent) throws IOException {
         if(competitionComboBox.getValue()!=null){
             setCompetition(competitionComboBox.getValue());
+            System.out.println("loadEventType");
+            EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
+            getCompetition().setEventTypes(dao.getEventTypeList());
+            System.out.println("loadCompetitors");
+            CompetitorDAO competitorDao = getHandle().attach(CompetitorDAO.class);
+            competitorDao.getCompetitors(getCompetition().getId(),getCompetition().getEventTypes()).forEach(getCompetition()::addCompetitor);
+
+
             loadView("competiton-view.fxml",actionEvent);
         }
     }
