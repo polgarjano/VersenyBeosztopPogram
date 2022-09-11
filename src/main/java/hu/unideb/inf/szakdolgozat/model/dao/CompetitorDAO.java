@@ -9,6 +9,7 @@ import org.jdbi.v3.sqlobject.config.RegisterArgumentFactory;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 
@@ -23,6 +24,7 @@ public interface CompetitorDAO extends SqlObject {
 
     @SqlUpdate("""
                     CREATE TABLE competitors(
+                    id IDENTITY primary key,
                     competitionId INTEGER,
                     name VARCHAR,
                     birthYear INTEGER,
@@ -30,14 +32,14 @@ public interface CompetitorDAO extends SqlObject {
                     eventType VARCHAR,
                     constrained BOOLEAN,
                     timeFrom DATETIME,
-                    timeUntil DATETIME,
-                    PRIMARY KEY (competitionId,name,birthYear,club)
+                    timeUntil DATETIME
                     )
             """)
     void createTable();
 
-    @SqlUpdate("INSERT INTO competitors VALUES ( :competitionId,:name,:birthYear,:club,:eventType,:constrained,:timeFrom,:timeUntil)")
-    void saveCompetitor(@BindBean Competitor competitor);
+    @SqlUpdate("INSERT INTO competitors ( competitionId,name,birthYear,club,eventType,constrained,timeFrom,timeUntil)VALUES ( :competitionId,:name,:birthYear,:club,:eventType,:constrained,:timeFrom,:timeUntil)")
+    @GetGeneratedKeys
+    Long saveCompetitor(@BindBean Competitor competitor);
 
 
     @SqlUpdate("DELETE FROM competitors WHERE competitionId = :id")

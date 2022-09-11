@@ -9,6 +9,7 @@ import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -29,7 +30,7 @@ public interface ScheduleDAO extends SqlObject {
                     scheduleId INTEGER,
                     numberOfTheRelay INTEGER,
                     startTime TIME,
-                    endTime TIME,
+                    endTime TIME
                     )
             """)
     void createRelayTable();
@@ -42,7 +43,12 @@ public interface ScheduleDAO extends SqlObject {
             """)
     void createCompetitorToRelayTable();
 
-    @SqlUpdate("INSERT INTO relay VALUES ( :competitionId, :scheduleId, :numberOfTheRelay, :startTime, :endTime)")
+    default void createTables(){
+        createCompetitorToRelayTable();
+        createRelayTable();
+    }
+
+    @SqlUpdate("INSERT INTO relay ( competitionId, scheduleId, numberOfTheRelay, startTime, endTime)VALUES ( :competitionId, :scheduleId, :numberOfTheRelay, :startTime, :endTime)")
     @GetGeneratedKeys
     Long insertLineToRelay(@Bind("competitionId") Long competitionId, @Bind("scheduleId") Integer scheduleId, @Bind("numberOfTheRelay")
             Integer numberOfTheRelay, @Bind("startTime") LocalTime startTime, @Bind("endTime") LocalTime endTime);
@@ -66,7 +72,7 @@ public interface ScheduleDAO extends SqlObject {
 
     default List<Schedule> getSchedules(Long competitionId, List<Competitor> competitors) {
         List<Integer> nOSchedule = getHandle()
-                .select("SELECT COUNT(scheduleId) from relay where competitionId = ?", competitionId)
+                .select("SELECT scheduleId from relay where competitionId = ?", competitionId)
                 .map((rs, ctx) -> rs.getInt("scheduleId"))
                 .stream()
                 .toList();
@@ -75,7 +81,29 @@ public interface ScheduleDAO extends SqlObject {
             Schedule currentSchedule = new Schedule();
             //TODO
             /* felszedem a relayeket bele rakom A scheduelbe és felszedem a relay hez ha lövőket a paraméterbőlmeg a kapcsoló táblából*/
+            var currentRelays = getHandle().select("SELECT id, numberOfTheRelay,startTime,endTime from relay " +
+                            "where competitionId=? and scheduleId=?", competitionId, i)
+                    .mapToBean(Relay.class)
+                    .stream()
+                    .sorted(Comparator.comparingInt(Relay::getNumberOfTheRelay))
+                    .toList();
 
+            for (Relay relay : currentRelays) {
+                relay.setCompetitors(getHandle()
+                        .select("SELECT competitorId FROM relayToCompetitor WHERE relayId =?", relay.getId())
+                        .map((rs, col, ctx) ->competitors.stream().filter(x -> {
+                            try {
+                                return x.getId() == rs.getInt(col);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            return false;
+                        }).findFirst().orElse(null))
+                        .list()
+                );
+            }
+
+            currentSchedule.setRelays(currentRelays);
             scheduleList.add(currentSchedule);
 
         }

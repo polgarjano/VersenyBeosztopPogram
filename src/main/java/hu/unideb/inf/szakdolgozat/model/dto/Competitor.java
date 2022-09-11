@@ -14,6 +14,7 @@ import java.util.Objects;
 @Builder
 @Data
 public class Competitor {
+    private Long id;
     private Long competitionId;
     private String name;
     private Integer birthYear;
@@ -23,6 +24,16 @@ public class Competitor {
     private boolean constrained;
     @EqualsAndHashCode.Exclude
     private Constraint constrain;
+
+    public Competitor(Long competitionId, String name, Integer birthYear, String club, EventType eventType, boolean constrained, Constraint constrain) {
+        this.competitionId = competitionId;
+        this.name = name;
+        this.birthYear = birthYear;
+        this.club = club;
+        this.eventType = eventType;
+        this.constrained = constrained;
+        this.constrain = constrain;
+    }
 
     public LocalDateTime getTimeFrom() {
         System.out.println("get time frome");

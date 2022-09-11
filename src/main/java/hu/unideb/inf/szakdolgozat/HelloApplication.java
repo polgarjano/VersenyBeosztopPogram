@@ -4,6 +4,7 @@ import hu.unideb.inf.szakdolgozat.controller.AbstractController;
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitorDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.ScheduleDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,9 +27,11 @@ public class HelloApplication extends Application {
         EventTypeDAO dao = handle.attach(EventTypeDAO.class);
         CompetitionDAO CompetitionDao =handle.attach(CompetitionDAO.class);
         CompetitorDAO competitorDAO = handle.attach(CompetitorDAO.class);
+        ScheduleDAO scheduleDAO = handle.attach(ScheduleDAO.class);
         dao.createTable();
         CompetitionDao.createTable();
         competitorDAO.createTable();
+        scheduleDAO.createTables();
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("startView.fxml"));
 
