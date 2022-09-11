@@ -48,7 +48,7 @@ public interface CompetitorDAO extends SqlObject {
 
     default List<Competitor> getCompetitors(Long competitionId, List<EventType> eventTypes) {
         return getHandle()
-                .select("SELECT competitionId, name,  birthYear, club, eventType, constrained, timeFrom, timeUntil " +
+                .select("SELECT id, competitionId, name,  birthYear, club, eventType, constrained, timeFrom, timeUntil " +
                         "FROM competitors WHERE competitionId = ?", competitionId)
                 .map((rs, ctx) ->{
                     EventType eventType = new EventType();
@@ -61,7 +61,7 @@ public interface CompetitorDAO extends SqlObject {
                         return false;
                     }).findFirst().get();
 
-                    return  new Competitor(rs.getLong("competitionId"),rs.getString("name"),
+                    return  new Competitor(rs.getLong("id"),rs.getLong("competitionId"),rs.getString("name"),
                             rs.getInt("birthYear"),rs.getString("club"),eventType,rs.getBoolean("constrained"),
                             new Constraint(LocalDateTime.of(rs.getDate("timeFrom").toLocalDate(),rs.getTime("timeFrom").toLocalTime()),
                                     LocalDateTime.of(rs.getDate("timeUntil").toLocalDate(),rs.getTime("timeUntil").toLocalTime())));

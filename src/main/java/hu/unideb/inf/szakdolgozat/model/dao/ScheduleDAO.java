@@ -10,6 +10,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
@@ -37,6 +38,7 @@ public interface ScheduleDAO extends SqlObject {
 
     @SqlUpdate("""
                     CREATE TABLE relayToCompetitor(
+                    competitionId INTEGER,
                     relayId Integer,
                     competitorId Integer
                     )
@@ -48,23 +50,35 @@ public interface ScheduleDAO extends SqlObject {
         createRelayTable();
     }
 
+    @SqlUpdate("DELETE FROM relay WHERE competitionId = :id")
+    void clearRelays(@Bind("id") Long id);
+
+    @SqlUpdate("DELETE FROM relayToCompetitor WHERE competitionId = :id")
+    void clearCompetitors(@Bind("id") Long id);
+
+    default void clearSchedule(Long competitionId){
+        clearRelays(competitionId);
+        clearCompetitors(competitionId);
+    }
+
+
     @SqlUpdate("INSERT INTO relay ( competitionId, scheduleId, numberOfTheRelay, startTime, endTime)VALUES ( :competitionId, :scheduleId, :numberOfTheRelay, :startTime, :endTime)")
     @GetGeneratedKeys
     Long insertLineToRelay(@Bind("competitionId") Long competitionId, @Bind("scheduleId") Integer scheduleId, @Bind("numberOfTheRelay")
             Integer numberOfTheRelay, @Bind("startTime") LocalTime startTime, @Bind("endTime") LocalTime endTime);
 
-    @SqlUpdate("INSERT INTO relayToCompetitor VALUES ( :relayId,:competitorId  )")
-    void insertCompetitor(@Bind("relayId") Long relayId, @Bind("competitorId") Long competitorId);
+    @SqlUpdate("INSERT INTO relayToCompetitor VALUES (:competitionId, :relayId,:competitorId  )")
+    void insertCompetitor(@Bind("competitionId")Long competitionId,@Bind("relayId") Long relayId, @Bind("competitorId") Long competitorId);
 
 
     default void saveSchedules(Long competitionId, List<Schedule> schedules) {
-
+        System.out.println(schedules.size());
         for (int i = 0; i < schedules.size(); i++) {
             int finalI = i;
             schedules.get(i).getRelays()
                     .forEach(x -> {
                         Long id = insertLineToRelay(competitionId, finalI, x.getNumberOfTheRelay(), x.getStartTime(), x.getEndTime());
-                        x.getCompetitors().forEach(c -> insertCompetitor(id, c.getId()));
+                        x.getCompetitors().forEach(c -> insertCompetitor(competitionId,id, c.getId()));
                     });
         }
 
@@ -72,15 +86,14 @@ public interface ScheduleDAO extends SqlObject {
 
     default List<Schedule> getSchedules(Long competitionId, List<Competitor> competitors) {
         List<Integer> nOSchedule = getHandle()
-                .select("SELECT scheduleId from relay where competitionId = ?", competitionId)
-                .map((rs, ctx) -> rs.getInt("scheduleId"))
+                .select("SELECT DISTINCT  scheduleId from relay where competitionId = ?", competitionId)
+                .map((rs,col, ctx) -> rs.getInt("scheduleId"))
                 .stream()
                 .toList();
         List<Schedule> scheduleList = new LinkedList<>();
+        System.out.println(nOSchedule.size());
         for (int i = 0; i < nOSchedule.size(); i++) {
             Schedule currentSchedule = new Schedule();
-            //TODO
-            /* felszedem a relayeket bele rakom A scheduelbe és felszedem a relay hez ha lövőket a paraméterbőlmeg a kapcsoló táblából*/
             var currentRelays = getHandle().select("SELECT id, numberOfTheRelay,startTime,endTime from relay " +
                             "where competitionId=? and scheduleId=?", competitionId, i)
                     .mapToBean(Relay.class)
@@ -98,7 +111,10 @@ public interface ScheduleDAO extends SqlObject {
                                 e.printStackTrace();
                             }
                             return false;
-                        }).findFirst().orElse(null))
+                        }).findFirst()
+                                .orElse(new Competitor("Deleted Competitor",0,"unknown",
+                                        new EventType("unknown", Duration.ZERO,Duration.ZERO,
+                                                Duration.ZERO,-1,true),false,null)))
                         .list()
                 );
             }

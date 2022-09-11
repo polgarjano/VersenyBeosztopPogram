@@ -3,6 +3,7 @@ package hu.unideb.inf.szakdolgozat.controller;
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitorDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.ScheduleDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,11 @@ public class StartViewController extends  AbstractController {
             getCompetition().setEventTypes(dao.getEventTypeList());
             System.out.println("loadCompetitors");
             CompetitorDAO competitorDao = getHandle().attach(CompetitorDAO.class);
-            competitorDao.getCompetitors(getCompetition().getId(),getCompetition().getEventTypes()).forEach(getCompetition()::addCompetitor);
+            competitorDao.getCompetitors(getCompetition().getId(),getCompetition().getEventTypes())
+                    .forEach(getCompetition()::addCompetitor);
+            System.out.println("loadSchedules");
+            ScheduleDAO scheduleDAO = getHandle().attach(ScheduleDAO.class);
+            getCompetition().setSchedules(scheduleDAO.getSchedules(getCompetition().getId(),getCompetition().getCompetitors()));
 
 
             loadView("competiton-view.fxml",actionEvent);

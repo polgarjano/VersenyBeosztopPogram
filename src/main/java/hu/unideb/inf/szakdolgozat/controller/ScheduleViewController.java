@@ -62,6 +62,7 @@ public class ScheduleViewController extends AbstractController {
                 Long id = competitorDAO.saveCompetitor(x);
                 x.setId(id);
             });
+            scheduleDAO.clearSchedule(getCompetition().getId());
             scheduleDAO.saveSchedules(getCompetition().getId(),getCompetition().getSchedules());
         });
     }
