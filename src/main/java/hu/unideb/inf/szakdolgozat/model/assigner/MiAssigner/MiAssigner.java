@@ -10,7 +10,7 @@ import java.util.*;
 
 public class MiAssigner {
     private static final Double TIME_MULTIPLIER = 1.0;
-    private static final Double REQUEST_MULTIPLIER = 600.0;
+    private static final Double REQUEST_MULTIPLIER = 50.0;
     private static final Double SHATTERED_EVENTS_MULTIPLIER = 1.0;
 
     private static final String BREAK = "break";
@@ -157,8 +157,9 @@ public class MiAssigner {
                             relays.get(i).getEventTypes().get(competitor.getEventType()) > 0)
                     {
                         relays.get(i).addCompetitor(competitor);
-                        competitors.remove(competitor);
+                        System.out.println(competitor +" was removed: "+ competitors.remove(competitor));
                         relays.get(i).getEventTypes().replace(competitor.getEventType(), relays.get(i).getEventTypes().get(competitor.getEventType()) - 1);
+                        break;
                     }
                 }
             }
