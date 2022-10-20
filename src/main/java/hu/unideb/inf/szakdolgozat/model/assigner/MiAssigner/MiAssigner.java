@@ -15,7 +15,7 @@ public class MiAssigner {
 
     private static final String BREAK = "break";
 
-    private static final Integer BREAK_TIME = 40;
+    private static final Integer BREAK_TIME = 10;
 
     public MiAssigner(Competition competition) {
         this.competition = competition;
@@ -253,6 +253,7 @@ public class MiAssigner {
             }
 
         }
+        System.out.println("Conflict map:");
         conflictMap
                 .forEach(System.out::println);
 
@@ -467,6 +468,13 @@ public class MiAssigner {
 
         int numberOfScheduledCompetitors;
 
+        Double josagErtek = null;
+
+        private LocalTime startTime;
+        private LocalTime endTime;
+
+        ArrayList<EventNode> childrenNodes;
+
         public Double getJosagErtek() {
             return josagErtek;
         }
@@ -475,12 +483,9 @@ public class MiAssigner {
             return numberOfRelay;
         }
 
-        Double josagErtek = null;
 
-        private LocalTime startTime;
-        private LocalTime endTime;
 
-        ArrayList<EventNode> childrenNodes;
+
 
         EventNode add(EventType eventType, int numberOfRelay, int freeLaneAfterThisNode, int numberOfNotScheduledCompetitors,
                       int numberOfScheduledCompetitors, LocalTime startTime, LocalTime endTime) {

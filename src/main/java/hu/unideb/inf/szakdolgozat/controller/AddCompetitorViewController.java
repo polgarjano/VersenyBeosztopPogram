@@ -162,7 +162,7 @@ public class AddCompetitorViewController extends AbstractController {
     }
 
     @FXML
-    public void AddCompetitor(ActionEvent actionEvent) {
+    public void addCompetitor(ActionEvent actionEvent) {
         resetExceptionLabels();
         if (validate()) {
             Competitor competitor = new Competitor(nameTextField.getText(),
@@ -189,12 +189,12 @@ public class AddCompetitorViewController extends AbstractController {
     }
 
     @FXML
-    public void LoadNewEventView(ActionEvent actionEvent) throws IOException {
+    public void loadNewEventView(ActionEvent actionEvent) throws IOException {
         super.loadView("AddNewEventType.fxml", actionEvent);
     }
 
     @FXML
-    public void Back(ActionEvent actionEvent) throws IOException {
+    public void back(ActionEvent actionEvent) throws IOException {
         super.loadView("competiton-view.fxml", actionEvent);
     }
 
@@ -293,7 +293,7 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public void cancel(ActionEvent actionEvent) {
         addCompetitorButton.setText("Add");
-        addCompetitorButton.setOnAction(this::AddCompetitor);
+        addCompetitorButton.setOnAction(this::addCompetitor);
         currentCompetitor = null;
 
         nameTextField.setText("");
