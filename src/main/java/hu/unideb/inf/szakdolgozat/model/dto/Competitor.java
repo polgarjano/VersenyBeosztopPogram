@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import hu.unideb.inf.szakdolgozat.model.dto.record.Constraint;
 
 @EqualsAndHashCode
 @Getter
@@ -42,14 +43,14 @@ public class Competitor {
             return null;
         }
 
-        return constrain.getAvailableFromThatTime();
+        return constrain.availableFromThatTime();
     }
 
     public void setTimeFrom(LocalDateTime timeFrom) {
         if(constrain==null){
-            constrain = new Constraint();
+            constrain = new Constraint(timeFrom,null);
         }
-        constrain.setAvailableFromThatTime(timeFrom);
+        constrain = new Constraint(timeFrom,constrain.availableUntilThisTime());
     }
 
     public LocalDateTime getTimeUntil() {
@@ -59,14 +60,14 @@ public class Competitor {
             return null;
         }
 
-        return constrain.getAvailableUntilThisTime();
+        return constrain.availableUntilThisTime();
     }
 
     public void setTimeUntil(LocalDateTime timeUntil) {
         if(constrain==null){
-            constrain = new Constraint();
+            constrain = new Constraint(null,timeUntil);
         }
-        constrain.setAvailableUntilThisTime(timeUntil);
+        constrain = new Constraint(constrain.availableFromThatTime(),timeUntil);
     }
 
 
@@ -104,8 +105,8 @@ public class Competitor {
 
     public String getConstrainInString() {
         if (constrained) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
-            return constrain.getAvailableFromThatTime().format(formatter) + " - " + constrain.getAvailableUntilThisTime().format(formatter);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            return constrain.availableFromThatTime().format(formatter) + " - " + constrain.availableUntilThisTime().format(formatter);
         } else {
 
             return "Not constrained";

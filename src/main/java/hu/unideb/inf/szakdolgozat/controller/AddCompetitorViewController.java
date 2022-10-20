@@ -4,9 +4,10 @@ import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner.MiAssigner;
 import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
-import hu.unideb.inf.szakdolgozat.model.dto.Constraint;
+//import hu.unideb.inf.szakdolgozat.model.dto.Constraint;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
+import hu.unideb.inf.szakdolgozat.model.dto.record.Constraint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -261,13 +262,13 @@ public class AddCompetitorViewController extends AbstractController {
             birthYearTextField.setText(currentCompetitor.getBirthYear().toString());
             isConstrained.setSelected(currentCompetitor.isConstrained());
 
-            fromTimeDate.setValue(currentCompetitor.getConstrain().getAvailableFromThatTime().toLocalDate());
-            fromTimeHour.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableFromThatTime().getHour()));
-            fromTimeMinute.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableFromThatTime().getMinute()));
+            fromTimeDate.setValue(currentCompetitor.getConstrain().availableFromThatTime().toLocalDate());
+            fromTimeHour.setText(Integer.toString(currentCompetitor.getConstrain().availableFromThatTime().getHour()));
+            fromTimeMinute.setText(Integer.toString(currentCompetitor.getConstrain().availableFromThatTime().getMinute()));
 
-            untilTimeDate.setValue(currentCompetitor.getConstrain().getAvailableUntilThisTime().toLocalDate());
-            untilTimeHour.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableUntilThisTime().getHour()));
-            untilTimeMinute.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableUntilThisTime().getMinute()));
+            untilTimeDate.setValue(currentCompetitor.getConstrain().availableUntilThisTime().toLocalDate());
+            untilTimeHour.setText(Integer.toString(currentCompetitor.getConstrain().availableUntilThisTime().getHour()));
+            untilTimeMinute.setText(Integer.toString(currentCompetitor.getConstrain().availableUntilThisTime().getMinute()));
 
             eventTypeComboBox.getSelectionModel().select(currentCompetitor.getEventType());
         }

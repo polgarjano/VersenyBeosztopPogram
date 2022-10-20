@@ -4,7 +4,7 @@ import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.CompetitorDAO;
 import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
-import hu.unideb.inf.szakdolgozat.model.dto.Constraint;
+import hu.unideb.inf.szakdolgozat.model.dto.record.Constraint;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;

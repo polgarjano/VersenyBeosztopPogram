@@ -151,8 +151,8 @@ public class MiAssigner {
                 .toList();
         for (Competitor competitor : constrainedCompetitors) {
             for (int i = 0; i < relays.size(); i++) {
-                if (relays.get(i).getStartTime().isAfter(competitor.getConstrain().getAvailableFromThatTime().toLocalTime()) &&
-                        relays.get(i).getStartTime().isBefore(competitor.getConstrain().getAvailableUntilThisTime().toLocalTime())) {
+                if (relays.get(i).getStartTime().isAfter(competitor.getConstrain().availableFromThatTime().toLocalTime()) &&
+                        relays.get(i).getStartTime().isBefore(competitor.getConstrain().availableUntilThisTime().toLocalTime())) {
                     if (relays.get(i).getEventTypes().get(competitor.getEventType()) != null &&
                             relays.get(i).getEventTypes().get(competitor.getEventType()) > 0)
                     {
@@ -527,8 +527,8 @@ public class MiAssigner {
                     .toList();
             for (Competitor competitor :
                     competitors) {
-                if (!startTime.isAfter(competitor.getConstrain().getAvailableFromThatTime().toLocalTime()) ||
-                        !startTime.isBefore(competitor.getConstrain().getAvailableUntilThisTime().toLocalTime())) {
+                if (!startTime.isAfter(competitor.getConstrain().availableFromThatTime().toLocalTime()) ||
+                        !startTime.isBefore(competitor.getConstrain().availableUntilThisTime().toLocalTime())) {
                     akku++;
                 }
             }
