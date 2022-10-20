@@ -4,8 +4,6 @@ import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -100,13 +98,19 @@ public class CompetitionController extends AbstractController {
 
     @Override
     public void init(Competition competition) {
-        setCompetition(competition);
-        competitionName.setText(competition.getName());
-        numberOfLanes.setText(competition.getNumberOfLanes().toString());
-        delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().toMinutes()));
-        startTimeDate.setValue(competition.getTimeOfBeginning().toLocalDate());
-        startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
-        startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));
+        if (competition != null) {
+            setCompetition(competition);
+            competitionName.setText(competition.getName());
+            numberOfLanes.setText(competition.getNumberOfLanes().toString());
+            delayBetweenRelays.setText(String.valueOf(competition.getDelayBetweenRelays().toMinutes()));
+            startTimeDate.setValue(competition.getTimeOfBeginning().toLocalDate());
+            startTimeHour.setText(String.valueOf(competition.getTimeOfBeginning().getHour()));
+            startTimeMinute.setText(String.valueOf(competition.getTimeOfBeginning().getMinute()));
+        }
+    }
 
+    @FXML
+    public void back(ActionEvent actionEvent) throws IOException {
+        loadView("startView.fxml", actionEvent);
     }
 }

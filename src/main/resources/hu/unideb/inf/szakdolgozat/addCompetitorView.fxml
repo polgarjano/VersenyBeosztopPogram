@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="675.0" prefWidth="1018.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.AddCompetitorViewController">
+<AnchorPane prefHeight="679.0" prefWidth="1121.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.szakdolgozat.controller.AddCompetitorViewController">
    <children>
-      <VBox layoutX="-1.0">
+      <VBox layoutX="-1.0" prefHeight="679.0" prefWidth="1166.0">
          <children>
             <HBox alignment="CENTER" prefHeight="99.0" prefWidth="1018.0">
                <children>
@@ -31,106 +31,164 @@
                   </Label>
                   <Label fx:id="delayBetweenRelaysLabel" text="Label" />
                </children></HBox>
-            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="576.0" prefWidth="875.0">
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="580.0" prefWidth="989.0">
                <children>
-                  <TableView fx:id="table" prefHeight="576.0" prefWidth="617.0">
+                  <TableView fx:id="table" prefHeight="580.0" prefWidth="755.0">
                      <columns>
                         <TableColumn fx:id="nameTableColum" prefWidth="156.0" text="Name" />
                         <TableColumn fx:id="clubTableColum" prefWidth="140.0" text="Club" />
                         <TableColumn fx:id="birthYearTableColum" minWidth="0.0" prefWidth="72.0" text="Birth Year" />
                         <TableColumn fx:id="eventTypeTableColum" prefWidth="123.0" text="Event Type" />
-                        <TableColumn fx:id="timeConstrainTableColum" prefWidth="123.0" text="Desired Time" />
+                        <TableColumn fx:id="timeConstrainTableColum" prefWidth="263.0" text="Desired Time" />
                      </columns></TableView>
-                  <HBox prefHeight="576.0" prefWidth="383.0">
+                  <VBox>
                      <children>
-                        <VBox prefHeight="576.0" prefWidth="197.0">
+                        <ComboBox fx:id="selectCompetitorComboBox" prefHeight="25.0" prefWidth="404.0" />
+                        <HBox alignment="CENTER">
                            <children>
-                              <Label prefHeight="49.0" prefWidth="79.0" text="Name:">
+                              <Button mnemonicParsing="false" onAction="#selectShooter" text="SelectCompetitor">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
-                                 <padding>
-                                    <Insets top="40.0" />
-                                 </padding>
-                              </Label>
-                              <Label layoutX="10.0" layoutY="10.0" prefHeight="28.0" prefWidth="239.0" text="Club:">
-                                 <padding>
-                                    <Insets top="40.0" />
-                                 </padding>
-                              </Label>
-                              <Label layoutX="10.0" layoutY="38.0" prefHeight="28.0" prefWidth="239.0" text="Birth year:">
-                                 <padding>
-                                    <Insets top="40.0" />
-                                 </padding>
-                              </Label>
-                              <Label layoutX="10.0" layoutY="181.0" prefHeight="28.0" prefWidth="239.0" text="Desired time:">
-                                 <padding>
-                                    <Insets top="40.0" />
-                                 </padding>
-                              </Label>
-                              <Label layoutX="10.0" layoutY="66.0" prefHeight="28.0" prefWidth="239.0" text="Event Type:">
-                                 <padding>
-                                    <Insets top="40.0" />
-                                 </padding>
-                              </Label>
-                              <HBox alignment="BOTTOM_LEFT" prefHeight="348.0" prefWidth="110.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#Back" prefHeight="60.0" prefWidth="80.0" text="Back" />
-                                 </children>
-                              </HBox>
+                                 <HBox.margin>
+                                    <Insets right="100.0" />
+                                 </HBox.margin></Button>
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
                            </children>
-                        </VBox>
-                        <VBox prefHeight="576.0" prefWidth="359.0">
+                        </HBox>
+                        <HBox prefHeight="580.0" prefWidth="404.0">
                            <children>
-                              <Label fx:id="nameExceptionLabel" prefHeight="30.0" text="Label" />
-                              <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="218.0" />
-                              <Label fx:id="clubExceptionLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
-                              <TextField fx:id="clubTextField" prefHeight="30.0" />
-                              <Label fx:id="birthDayExceptionLabel" layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
-                              <TextField fx:id="birthYearTextField" prefHeight="30.0" />
-                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="272.0">
+                              <VBox prefHeight="576.0" prefWidth="197.0">
                                  <children>
-                                    <RadioButton fx:id="radioAny" mnemonicParsing="false" prefWidth="70.0" selected="true" text="any">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="timeConstrain" />
-                                       </toggleGroup>
-                                    </RadioButton>
-                                    <RadioButton fx:id="radioEarly" mnemonicParsing="false" prefWidth="70.0" text="early" toggleGroup="$timeConstrain" />
-                                    <RadioButton fx:id="radioMiddle" mnemonicParsing="false" prefWidth="70.0" text="middle" toggleGroup="$timeConstrain" />
-                                    <RadioButton fx:id="radioLate" mnemonicParsing="false" prefWidth="70.0" text="late" toggleGroup="$timeConstrain" />
-                                 </children></HBox>
-                              <Label fx:id="eventExceptionLabel" prefHeight="30.0" text="Label" />
-                              <ComboBox fx:id="eventTypeComboBox" prefHeight="25.0" prefWidth="343.0" />
-                              <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="218.0">
-                                 <children>
-                                    <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#LoadNewEventView" text="New Event Type" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="TOP_CENTER" prefHeight="94.0" prefWidth="272.0">
-                                 <children>
-                                    <VBox>
+                                    <Label prefHeight="0.0" prefWidth="79.0" text="Name:">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets top="33.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="10.0" prefHeight="28.0" prefWidth="239.0" text="Club:">
+                                       <padding>
+                                          <Insets top="33.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="38.0" prefHeight="43.0" prefWidth="121.0" text="Birth year:">
+                                       <padding>
+                                          <Insets top="33.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label contentDisplay="CENTER" layoutX="10.0" layoutY="181.0" prefHeight="96.0" prefWidth="121.0" text="Time Constrains">
+                                       <padding>
+                                          <Insets top="15.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="533.0" prefHeight="31.0" prefWidth="121.0" text="From">
+                                       <padding>
+                                          <Insets top="10.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="181.0" prefHeight="27.0" prefWidth="121.0" text="Until">
+                                       <padding>
+                                          <Insets top="30.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label layoutX="10.0" layoutY="66.0" prefHeight="28.0" prefWidth="239.0" text="Event Type:">
+                                       <padding>
+                                          <Insets top="40.0" />
+                                       </padding>
+                                    </Label>
+                                    <HBox alignment="BOTTOM_LEFT" prefHeight="179.0" prefWidth="121.0">
                                        <children>
-                                          <Button fx:id="AddCompetitorButton" mnemonicParsing="false" onAction="#AddCompetitor" text="Add Competitor" />
-                                          <Label fx:id="addExceptionLabel" prefHeight="75.0" prefWidth="105.0" wrapText="true" />
+                                          <Button mnemonicParsing="false" onAction="#back" prefHeight="60.0" prefWidth="80.0" text="Back" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="576.0" prefWidth="359.0">
+                                 <children>
+                                    <Label fx:id="nameExceptionLabel" prefHeight="30.0" text="Label" />
+                                    <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="218.0" />
+                                    <Label fx:id="clubExceptionLabel" layoutX="10.0" layoutY="10.0" prefHeight="30.0" text="Label" />
+                                    <TextField fx:id="clubTextField" prefHeight="30.0" />
+                                    <Label fx:id="birthDayExceptionLabel" layoutX="10.0" layoutY="70.0" prefHeight="30.0" text="Label" />
+                                    <TextField fx:id="birthYearTextField" prefHeight="30.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <CheckBox fx:id="isConstrained" mnemonicParsing="false" prefHeight="64.0" prefWidth="107.0" text="Is Constraind">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
+                                    </CheckBox>
+                                    <VBox alignment="TOP_CENTER" prefHeight="63.0" prefWidth="283.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label fx:id="fromTimeExceptionLabel" prefHeight="30.0" prefWidth="366.0" textAlignment="CENTER" />
+                                          <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="283.0">
+                                             <children>
+                                                <DatePicker fx:id="fromTimeDate">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </DatePicker>
+                                                <TextField fx:id="fromTimeHour" prefHeight="25.0" prefWidth="40.0" />
+                                                <Label text=":" />
+                                                <TextField fx:id="fromTimeMinute" prefHeight="25.0" prefWidth="40.0" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </VBox>
-                                    <Button mnemonicParsing="false" onAction="#DeletCompetitor" prefHeight="25.0" prefWidth="118.0" text="Delete Competitor">
-                                       <HBox.margin>
-                                          <Insets left="50.0" />
-                                       </HBox.margin>
-                                    </Button>
+                                    <VBox alignment="TOP_CENTER" prefHeight="53.0" prefWidth="273.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label fx:id="untilTimeExceptionLabel" prefHeight="30.0" prefWidth="366.0" textAlignment="CENTER" />
+                                          <HBox alignment="TOP_CENTER" prefHeight="49.0" prefWidth="386.0">
+                                             <children>
+                                                <DatePicker fx:id="untilTimeDate">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </DatePicker>
+                                                <TextField fx:id="untilTimeHour" prefHeight="25.0" prefWidth="40.0" />
+                                                <Label text=":" />
+                                                <TextField fx:id="untilTimeMinute" prefHeight="25.0" prefWidth="40.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <Label fx:id="eventExceptionLabel" prefHeight="30.0" text="Label" />
+                                    <ComboBox fx:id="eventTypeComboBox" prefHeight="25.0" prefWidth="343.0" />
+                                    <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="218.0">
+                                       <children>
+                                          <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#loadNewEventView" text="New Event Type" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_CENTER" prefHeight="57.0" prefWidth="247.0">
+                                       <children>
+                                          <VBox prefHeight="57.0" prefWidth="164.0">
+                                             <children>
+                                                <Button fx:id="addCompetitorButton" mnemonicParsing="false" onAction="#addCompetitor" prefHeight="25.0" prefWidth="111.0" text="Add" />
+                                                <Label fx:id="addExceptionLabel" prefHeight="33.0" prefWidth="105.0" wrapText="true" />
+                                             </children>
+                                          </VBox>
+                                          <Button contentDisplay="CENTER" layoutX="170.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteCompetitor" prefHeight="25.0" prefWidth="118.0" text="Delete" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="BOTTOM_RIGHT" prefHeight="80.0" prefWidth="283.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#generateNewScheduledButton" prefHeight="60.0" prefWidth="80.0" text="Generate Scheduler" textAlignment="CENTER" wrapText="true" />
+                                          <Button layoutX="202.0" layoutY="180.0" mnemonicParsing="false" onAction="#nextButton" prefHeight="60.0" prefWidth="80.0" text="Next" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <HBox alignment="BOTTOM_RIGHT" prefHeight="159.0" prefWidth="272.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#GenerateNewScheduledButton" prefHeight="60.0" prefWidth="80.0" text="Generate Scheduler" textAlignment="CENTER" wrapText="true" />
-                                    <Button layoutX="202.0" layoutY="180.0" mnemonicParsing="false" onAction="#NextButten" prefHeight="60.0" prefWidth="80.0" text="Next" />
-                                 </children>
-                              </HBox>
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
             </HBox>
          </children>

@@ -28,4 +28,13 @@ public class CompetitionEvent {
     public int hashCode() {
         return eventType.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "CompetitionEvent{" +
+                "eventType=" + eventType +
+                ", numberOfNotScheduledCompetitors=" + numberOfNotScheduledCompetitors +
+                ", numberOfCompetitors=" + numberOfCompetitors +
+                '}';
+    }
 }

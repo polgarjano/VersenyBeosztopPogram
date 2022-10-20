@@ -1,6 +1,7 @@
 package hu.unideb.inf.szakdolgozat.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class EventType {
     private String name;
     private Duration preparationTime;
@@ -19,12 +21,25 @@ public class EventType {
     private int eventGroup;
     private boolean IsPistolEvent;
 
+    public boolean isIsPistolEvent() {
+        return IsPistolEvent;
+    }
+
+    public void setIsPistolEvent(boolean pistolEvent) {
+        IsPistolEvent = pistolEvent;
+    }
+
+    public boolean getIsPistolEvent() {
+        return IsPistolEvent;
+    }
+
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 
-    public Duration getDuration(){
+    public Duration getDuration() {
         return preparationTime.plus(preparationAndSightingTime).plus(competitionTime);
     }
 

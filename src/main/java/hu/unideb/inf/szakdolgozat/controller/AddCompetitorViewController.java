@@ -1,10 +1,11 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
 import hu.unideb.inf.szakdolgozat.model.assigner.MiAssigner.MiAssigner;
+import hu.unideb.inf.szakdolgozat.model.dao.EventTypeDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
+import hu.unideb.inf.szakdolgozat.model.dto.Constraint;
 import hu.unideb.inf.szakdolgozat.model.dto.EventType;
-import hu.unideb.inf.szakdolgozat.model.dto.TimeConstrain;
 import hu.unideb.inf.szakdolgozat.model.validator.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AddCompetitorViewController extends AbstractController {
@@ -62,38 +65,57 @@ public class AddCompetitorViewController extends AbstractController {
     @FXML
     public TableView<Competitor> table;
 
+
     @FXML
-    public ToggleGroup timeConstrain;
+    public Label fromTimeExceptionLabel;
     @FXML
-    public RadioButton radioEarly;
+    public DatePicker fromTimeDate;
     @FXML
-    public RadioButton radioMiddle;
+    public TextField fromTimeHour;
     @FXML
-    public RadioButton radioLate;
+    public TextField fromTimeMinute;
     @FXML
-    public RadioButton radioAny;
+    public Label untilTimeExceptionLabel;
+    @FXML
+    public DatePicker untilTimeDate;
+    @FXML
+    public TextField untilTimeHour;
+    @FXML
+    public TextField untilTimeMinute;
+    @FXML
+    public CheckBox isConstrained;
+    @FXML
+    public ComboBox<Competitor> selectCompetitorComboBox;
+    @FXML
+    public Button addCompetitorButton;
+
+    public Competitor currentCompetitor;
 
     @Override
     public void init(Competition competition) {
         setCompetition(competition);
+        loadEventTypes();
         initLabels();
-        initTable();
+        initCompetitor();
         initEventComboBox();
-        initRadioButton();
+        initTimeConstrains();
+
     }
 
 
 
-    private void initTable() {
+
+    private void initCompetitor() {
 
         nameTableColum.setCellValueFactory(new PropertyValueFactory<>("name"));
         clubTableColum.setCellValueFactory(new PropertyValueFactory<>("club"));
         birthYearTableColum.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
         eventTypeTableColum.setCellValueFactory(new PropertyValueFactory<>("eventTypeName"));
-        timeConstrainTableColum.setCellValueFactory(new PropertyValueFactory<>("constrain"));
+        timeConstrainTableColum.setCellValueFactory(new PropertyValueFactory<>("constrainInString"));
+
         ObservableList<Competitor> observableList = FXCollections.observableList(getCompetition().getCompetitors());
         table.setItems(observableList);
-
+        selectCompetitorComboBox.setItems(observableList);
     }
 
     private void initLabels() {
@@ -110,11 +132,25 @@ public class AddCompetitorViewController extends AbstractController {
         ObservableList<EventType> eventType = FXCollections.observableList(getCompetition().getEventTypes());
         eventTypeComboBox.setItems(eventType);
     }
-    private void initRadioButton() {
-        radioAny.setUserData(TimeConstrain.Any);
-        radioEarly.setUserData(TimeConstrain.Early);
-        radioMiddle.setUserData(TimeConstrain.Middle);
-        radioLate.setUserData(TimeConstrain.Late);
+
+
+    private void initTimeConstrains() {
+        isConstrained.setSelected(false);
+        fromTimeDate.setValue(getCompetition().getTimeOfBeginning().toLocalDate());
+        fromTimeHour.setText(Integer.toString(getCompetition().getTimeOfBeginning().getHour()));
+        fromTimeMinute.setText(Integer.toString(getCompetition().getTimeOfBeginning().getMinute()));
+
+        untilTimeDate.setValue(getCompetition().getTimeOfBeginning().toLocalDate());
+        untilTimeHour.setText(Integer.toString(getCompetition().getTimeOfBeginning().getHour()));
+        untilTimeMinute.setText(Integer.toString(getCompetition().getTimeOfBeginning().getMinute()));
+    }
+
+    private void loadEventTypes() {
+            System.out.println("loadEventType");
+            EventTypeDAO dao = getHandle().attach(EventTypeDAO.class);
+            getCompetition().setEventTypes(dao.getEventTypeList());
+
+
     }
 
     private void resetExceptionLabels() {
@@ -126,31 +162,39 @@ public class AddCompetitorViewController extends AbstractController {
     }
 
     @FXML
-    public void AddCompetitor(ActionEvent actionEvent) {
+    public void addCompetitor(ActionEvent actionEvent) {
         resetExceptionLabels();
         if (validate()) {
             Competitor competitor = new Competitor(nameTextField.getText(),
                     Integer.parseInt(birthYearTextField.getText()),
                     clubTextField.getText(),
                     eventTypeComboBox.getValue(),
-                    (TimeConstrain) timeConstrain.getSelectedToggle().getUserData()
+                    isConstrained.isSelected(),
+                    new Constraint(LocalDateTime.of(fromTimeDate.getValue(),
+                            LocalTime.of(Integer.parseInt(fromTimeHour.getText()), Integer.parseInt(fromTimeMinute.getText()))),
+                            LocalDateTime.of(untilTimeDate.getValue(),
+                                    LocalTime.of(Integer.parseInt(untilTimeHour.getText()), Integer.parseInt(untilTimeMinute.getText()))))
             );
 
             if (!getCompetition().addCompetitor(competitor)) {
                 addExceptionLabel.setText("Competitor already in the list");
+
+                LocalTime.of(Integer.parseInt(fromTimeHour.getText()), Integer.parseInt(fromTimeMinute.getText()));
             }
         }
         table.refresh();
+        ObservableList<Competitor> observableList = FXCollections.observableList(getCompetition().getCompetitors());
+        selectCompetitorComboBox.setItems(observableList);
         System.out.println(getCompetition());
     }
 
     @FXML
-    public void LoadNewEventView(ActionEvent actionEvent) throws IOException {
+    public void loadNewEventView(ActionEvent actionEvent) throws IOException {
         super.loadView("AddNewEventType.fxml", actionEvent);
     }
 
     @FXML
-    public void Back(ActionEvent actionEvent) throws IOException {
+    public void back(ActionEvent actionEvent) throws IOException {
         super.loadView("competiton-view.fxml", actionEvent);
     }
 
@@ -163,27 +207,101 @@ public class AddCompetitorViewController extends AbstractController {
 
         AbstractValidator<Object> eventTypeValidator = new NotNullValidator();
 
+        AbstractValidator<Object> dateValidator = new NotNullValidator();
+
+        AbstractValidator<String> hourValidator = new StringNotEmptyValidator();
+        hourValidator.add(new StringToIntegerValidator());
+        hourValidator.add(new HourValidator());
+
+        AbstractValidator<String> minuteValidator = new StringNotEmptyValidator();
+        minuteValidator.add(new StringToIntegerValidator());
+        minuteValidator.add(new MinuteValidator());
+
 
         return (notEmptyString.execute(nameTextField.getText(), nameExceptionLabel)
                 & notEmptyString.execute(clubTextField.getText(), clubExceptionLabel)
                 & birthYearValidator.execute(birthYearTextField.getText(), birthDayExceptionLabel)
-                & eventTypeValidator.execute(eventTypeComboBox.getValue(), eventExceptionLabel));
+                & eventTypeValidator.execute(eventTypeComboBox.getValue(), eventExceptionLabel)
+                & dateValidator.execute(fromTimeDate.getValue(), fromTimeExceptionLabel)
+                & hourValidator.execute(fromTimeHour.getText(), fromTimeExceptionLabel)
+                & minuteValidator.execute(fromTimeMinute.getText(), fromTimeExceptionLabel)
+                & dateValidator.execute(untilTimeDate.getValue(), untilTimeExceptionLabel)
+                & hourValidator.execute(untilTimeHour.getText(), untilTimeExceptionLabel)
+                & minuteValidator.execute(untilTimeMinute.getText(), untilTimeExceptionLabel));
     }
 
     @FXML
-    public void DeletCompetitor(ActionEvent actionEvent) {
+    public void deleteCompetitor(ActionEvent actionEvent) {
+        getCompetition().getCompetitors().remove(currentCompetitor);
+        cancel(actionEvent);
+        table.refresh();
     }
 
     @FXML
-    public void NextButten(ActionEvent actionEvent) throws IOException {
+    public void nextButton(ActionEvent actionEvent) throws IOException {
         loadView("Schedule-view.fxml", actionEvent);
     }
 
     @FXML
-    public void GenerateNewScheduledButton(ActionEvent actionEvent) throws IOException {
-       // SimpleAssigner assigner = new SimpleAssigner();
+    public void generateNewScheduledButton(ActionEvent actionEvent) throws IOException {
+        // SimpleAssigner assigner = new SimpleAssigner();
         MiAssigner assigner = new MiAssigner(getCompetition());
         getCompetition().getSchedules().add(assigner.creatStartList());
         loadView("Schedule-view.fxml", actionEvent);
+    }
+
+    public void selectShooter(ActionEvent actionEvent) {
+
+        currentCompetitor = selectCompetitorComboBox.getValue();
+        if (currentCompetitor != null) {
+            addCompetitorButton.setText("Update");
+            addCompetitorButton.setOnAction(this::updateCompetitor);
+            nameTextField.setText(currentCompetitor.getName());
+            clubTextField.setText(currentCompetitor.getClub());
+            birthYearTextField.setText(currentCompetitor.getBirthYear().toString());
+            isConstrained.setSelected(currentCompetitor.isConstrained());
+
+            fromTimeDate.setValue(currentCompetitor.getConstrain().getAvailableFromThatTime().toLocalDate());
+            fromTimeHour.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableFromThatTime().getHour()));
+            fromTimeMinute.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableFromThatTime().getMinute()));
+
+            untilTimeDate.setValue(currentCompetitor.getConstrain().getAvailableUntilThisTime().toLocalDate());
+            untilTimeHour.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableUntilThisTime().getHour()));
+            untilTimeMinute.setText(Integer.toString(currentCompetitor.getConstrain().getAvailableUntilThisTime().getMinute()));
+
+            eventTypeComboBox.getSelectionModel().select(currentCompetitor.getEventType());
+        }
+    }
+
+    @FXML
+    private void updateCompetitor(ActionEvent actionEvent) {
+        if(validate()) {
+            currentCompetitor.setName(nameTextField.getText());
+            currentCompetitor.setBirthYear(Integer.parseInt(birthYearTextField.getText()));
+            currentCompetitor.setClub(clubTextField.getText());
+            currentCompetitor.setEventType(eventTypeComboBox.getValue());
+            currentCompetitor.setConstrained(isConstrained.isSelected());
+            currentCompetitor.setConstrain(new Constraint(LocalDateTime.of(fromTimeDate.getValue(),
+                    LocalTime.of(Integer.parseInt(fromTimeHour.getText()), Integer.parseInt(fromTimeMinute.getText()))),
+                    LocalDateTime.of(untilTimeDate.getValue(),
+                            LocalTime.of(Integer.parseInt(untilTimeHour.getText()), Integer.parseInt(untilTimeMinute.getText())))));
+            cancel(actionEvent);
+            table.refresh();
+        }
+    }
+
+    @FXML
+    public void cancel(ActionEvent actionEvent) {
+        addCompetitorButton.setText("Add");
+        addCompetitorButton.setOnAction(this::addCompetitor);
+        currentCompetitor = null;
+
+        nameTextField.setText("");
+        clubTextField.setText("");
+        birthYearTextField.setText("");
+        initTimeConstrains();
+        eventTypeComboBox.getSelectionModel().clearSelection();
+        selectCompetitorComboBox.getSelectionModel().clearSelection();
+
     }
 }

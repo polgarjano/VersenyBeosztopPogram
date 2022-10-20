@@ -1,5 +1,8 @@
 package hu.unideb.inf.szakdolgozat.controller;
 
+import hu.unideb.inf.szakdolgozat.model.dao.CompetitionDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.CompetitorDAO;
+import hu.unideb.inf.szakdolgozat.model.dao.ScheduleDAO;
 import hu.unideb.inf.szakdolgozat.model.dto.Competition;
 import hu.unideb.inf.szakdolgozat.model.dto.Competitor;
 import hu.unideb.inf.szakdolgozat.model.dto.Relay;
@@ -10,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import org.jdbi.v3.core.Handle;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -37,11 +41,30 @@ public class ScheduleViewController extends AbstractController {
 
     @FXML
     public void back(ActionEvent actionEvent) throws IOException {
-        super.loadView("addCompetitorView.fxml",actionEvent);
+        super.loadView("addCompetitorView.fxml", actionEvent);
     }
 
     @FXML
     public void save(ActionEvent actionEvent) {
+        getHandle().useTransaction(h -> {
+            CompetitionDAO dao = h.attach(CompetitionDAO.class);
+            CompetitorDAO competitorDAO = h.attach(CompetitorDAO.class);
+            ScheduleDAO scheduleDAO = h.attach(ScheduleDAO.class);
+            if (getCompetition().getId() == null) {
+                getCompetition().setId(dao.saveCompetition(getCompetition()));
+            } else {
+                dao.updateCompetition(getCompetition());
+            }
+
+            competitorDAO.clearCompetitors(getCompetition().getId());
+            getCompetition().getCompetitors().forEach(x -> {
+                x.setCompetitionId(getCompetition().getId());
+                Long id = competitorDAO.saveCompetitor(x);
+                x.setId(id);
+            });
+            scheduleDAO.clearSchedule(getCompetition().getId());
+            scheduleDAO.saveSchedules(getCompetition().getId(),getCompetition().getSchedules());
+        });
     }
 
     @Override
@@ -102,7 +125,7 @@ public class ScheduleViewController extends AbstractController {
         List<TreeItem<ScheduledCompetitor>> treeItems = new LinkedList<>();
 
         for (int i = 0; i < competitors.size(); i++) {
-            TreeItem<ScheduledCompetitor> relayTreeItem = new TreeItem<>(ScheduledCompetitor.getCompetitor(i,competitors.get(i)));
+            TreeItem<ScheduledCompetitor> relayTreeItem = new TreeItem<>(ScheduledCompetitor.getCompetitor(i, competitors.get(i)));
             treeItems.add(relayTreeItem);
         }
 
